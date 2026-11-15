@@ -16,11 +16,18 @@ pnpm dev
 ## 대회 당일 순서
 
 1. 설정 파일을 만든다. `data/sample.config.json`을 `data/ycpc2026.config.json`으로 복사해 고친다.
-2. AtCoder에 로그인한 브라우저의 개발자 도구에서 `REVEL_SESSION` 쿠키 값을 복사한다. 대회 중이거나 순위표가 프리즈된 동안에는 운영진 계정이어야 전체 제출이 보인다.
+2. AtCoder에 로그인한 브라우저의 개발자 도구에서 `REVEL_SESSION` 쿠키 값을 복사해 저장소 폴더의 `.env` 파일에 적는다. 대회 중이거나 순위표가 프리즈된 동안에는 운영진 계정이어야 전체 제출이 보인다.
+
+   ```sh
+   # 쿠키 값을 클립보드에 복사한 상태에서. 값이 화면이나 셸 기록에 남지 않는다.
+   printf "ATCODER_SESSION='%s'\n" "$(pbpaste)" > .env
+   ```
+
+   `.env`는 저장소에 올라가지 않는다. 이 값은 로그인 그 자체이므로 다른 곳에 붙여 넣지 않는다.
 3. 자료를 받는다.
 
    ```sh
-   ATCODER_SESSION='<REVEL_SESSION 값>' pnpm collect data/ycpc2026.config.json
+   pnpm collect data/ycpc2026.config.json
    ```
 
    받은 원본은 `raw/ycpc2026/`에, 변환한 자료는 `data/ycpc2026.json`에 저장된다. 꽉 찬 제출 목록 쪽은 다시 받지 않으므로, 대회 중에 한두 번 미리 돌려 두면 종료 직후에는 새로 생긴 쪽만 받는다.

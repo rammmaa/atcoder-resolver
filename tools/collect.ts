@@ -1,8 +1,11 @@
 /**
  * AtCoder에서 대회 자료를 받아 리졸버가 읽는 JSON으로 바꾼다.
  *
- *   ATCODER_SESSION=<REVEL_SESSION 쿠키 값> pnpm collect data/ycpc2026.config.json
+ *   pnpm collect data/ycpc2026.config.json
  *   pnpm collect data/ycpc2026.config.json --offline   # raw/에 받아 둔 것만으로 다시 변환
+ *
+ * 로그인 쿠키는 저장소 폴더의 .env 파일에 ATCODER_SESSION=<REVEL_SESSION 쿠키 값>으로 적어 둔다.
+ * 같은 이름의 환경 변수가 있으면 그쪽을 먼저 쓴다.
  *
  * 옵션
  *   --offline      AtCoder에 접속하지 않고 raw/<contestId>/에 있는 파일만 쓴다
@@ -18,6 +21,7 @@ import { buildBoard, revealAll } from '../src/core/scoring';
 import type { ContestData } from '../src/core/types';
 import { type AtCoderStandings, compareWithOfficial, convert, type OfficialMismatch, type ResolverConfig } from './atcoder/convert';
 import { parseContestTop, parseParticipantsCsv, parseSubmissionsPage, type RawSubmission } from './atcoder/parse';
+import { toCookieHeader } from './atcoder/session';
 
 const BASE = 'https://atcoder.jp';
 const PAGE_SIZE = 20;
@@ -31,15 +35,8 @@ const configPath = args.find((a, i) => !a.startsWith('--') && !['--delay', '--ou
 
 const sleep = (ms: number) => new Promise((done) => setTimeout(done, ms));
 
-/** 환경 변수에는 쿠키 값만 넣어도 되고, 브라우저에서 복사한 Cookie 헤더를 통째로 넣어도 된다. */
-function cookieHeader(): string | undefined {
-  const session = process.env.ATCODER_SESSION?.trim();
-  if (!session) return undefined;
-  return session.includes('REVEL_SESSION=') ? session : `REVEL_SESSION=${session}`;
-}
-
 async function get(path: string): Promise<string> {
-  const cookie = cookieHeader();
+  const cookie = toCookieHeader(process.env.ATCODER_SESSION);
   const res = await fetch(BASE + path, {
     redirect: 'manual',
     headers: { 'User-Agent': 'atcoder-resolver', ...(cookie ? { Cookie: cookie } : {}) },
@@ -172,6 +169,8 @@ async function main() {
   }
   const config = JSON.parse(readFileSync(configPath, 'utf8')) as ResolverConfig;
   if (!config.contestId) throw new Error('설정 파일에 contestId가 없습니다.');
+  // 쿠키를 명령줄에 적으면 셸 기록에 남는다. 저장소에 올라가지 않는 .env 파일에서 읽는다.
+  if (!process.env.ATCODER_SESSION && existsSync('.env')) process.loadEnvFile('.env');
   const rawDir = resolve('raw', config.contestId);
 
   if (!flag('--offline')) {
@@ -206,8 +205,11 @@ main().catch((e) => {
   if (e instanceof LoginRequired) {
     console.error(
       `\n로그인이 필요한 화면입니다: ${e.message}\n` +
+        (process.env.ATCODER_SESSION
+          ? 'ATCODER_SESSION 값으로는 로그인되지 않았습니다. 세션이 끝났거나 값이 잘못 복사된 것 같습니다.\n'
+          : 'ATCODER_SESSION이 없습니다.\n') +
         'AtCoder에 로그인한 브라우저의 개발자 도구에서 REVEL_SESSION 쿠키 값을 복사해\n' +
-        'ATCODER_SESSION 환경 변수에 넣고 다시 실행해 주세요. 대회 중에는 운영진 계정이어야 전체 제출이 보입니다.',
+        '.env 파일에 ATCODER_SESSION=<값>으로 적고 다시 실행해 주세요. 대회 중에는 운영진 계정이어야 전체 제출이 보입니다.',
     );
   } else {
     console.error(`\n${e instanceof Error ? e.message : e}`);
