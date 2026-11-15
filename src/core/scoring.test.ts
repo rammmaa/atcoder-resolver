@@ -109,6 +109,34 @@ describe('last 규칙 (AtCoder 기본)', () => {
   });
 });
 
+// 출처: https://atcoder.jp/contests/abc300/rules 의 "ペナルティ" 항목에 실린 예시 두 개
+describe('last 규칙: AtCoder 규칙 화면의 예시', () => {
+  const mmss = (m: number, s: number) => m * 60 + s;
+
+  it('A 정답 4:33, B 오답 10:22 뒤 정답 11:03이면 2문제에 16:03이다', () => {
+    const data = contest([
+      sub('kim', 'a', mmss(4, 33), 'AC'),
+      sub('kim', 'b', mmss(10, 22), 'WA'),
+      sub('kim', 'b', mmss(11, 3), 'AC'),
+    ]);
+    expect(rowOf(data, 'kim')).toMatchObject({ solved: 2, time: mmss(16, 3) });
+  });
+
+  it('끝내 풀지 못한 문제의 오답 3번은 더하지 않아 88:22다', () => {
+    const data = contest([
+      sub('kim', 'a', mmss(2, 5), 'AC'),
+      sub('kim', 'b', mmss(10, 56), 'AC'),
+      sub('kim', 'c', mmss(31, 3), 'WA'),
+      sub('kim', 'c', mmss(45, 37), 'WA'),
+      sub('kim', 'c', mmss(51, 43), 'WA'),
+      sub('lee', 'a', mmss(88, 22), 'AC'),
+    ]);
+    data.problems.push({ id: 'd', label: 'D' });
+    data.submissions.push(sub('kim', 'd', mmss(88, 22), 'AC'));
+    expect(rowOf(data, 'kim')).toMatchObject({ solved: 3, time: mmss(88, 22) });
+  });
+});
+
 describe('순위', () => {
   it('점수가 높은 순, 같으면 시간이 짧은 순으로 정렬한다', () => {
     const data = contest([

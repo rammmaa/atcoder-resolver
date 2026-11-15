@@ -134,8 +134,8 @@ function describeMismatches(list: OfficialMismatch[]): string {
     .slice(0, 10)
     .map(
       (m) =>
-        `    ${m.teamId}: 공식 ${m.official.rank}위 ${m.official.score}점 (${m.official.penalty}) / ` +
-        `계산 ${m.computed.rank}위 ${m.computed.score}점 (${m.computed.penalty})`,
+        `    ${m.teamId}: 공식 ${m.official.rank}위 ${m.official.score}점 (${m.official.penalty}) ${formatClock(m.official.time)} / ` +
+        `계산 ${m.computed.rank}위 ${m.computed.score}점 (${m.computed.penalty}) ${formatClock(m.computed.time)}`,
     );
   if (list.length > 10) lines.push(`    … 외 ${list.length - 10}명`);
   return lines.join('\n');

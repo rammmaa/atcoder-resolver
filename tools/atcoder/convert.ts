@@ -33,7 +33,7 @@ export interface AtCoderStandings {
     UserName: string;
     UserScreenName: string;
     Affiliation?: string;
-    /** Score는 실제 점수의 100배다. Penalty는 오답 수. */
+    /** Score는 실제 점수의 100배, Penalty는 오답 수, Elapsed는 페널티까지 더한 시간(나노초)이다. */
     TotalResult: { Count: number; Score: number; Penalty: number; Elapsed: number };
     TaskResults: Record<string, unknown>;
   }[];
@@ -72,13 +72,15 @@ export function convert({ config, top, submissions, standings, participants }: C
   const remember = (handle: string) => {
     if (!canonical.has(handle.toLowerCase())) canonical.set(handle.toLowerCase(), handle);
   };
-  standings?.StandingsData.forEach((s) => remember(s.UserScreenName));
+  // AtCoder 순위표 화면도 아이디가 빈 행(탈퇴한 계정)은 버린다.
+  const officialRows = (standings?.StandingsData ?? []).filter((s) => s.UserScreenName);
+  officialRows.forEach((s) => remember(s.UserScreenName));
   submissions.forEach((s) => remember(s.user));
   participants?.forEach((p) => remember(p.handle));
   const idOf = (handle: string) => canonical.get(handle.toLowerCase()) ?? handle;
 
   const listed = new Map((participants ?? []).map((p) => [idOf(p.handle), p]));
-  const official = new Map((standings?.StandingsData ?? []).map((s) => [idOf(s.UserScreenName), s]));
+  const official = new Map(officialRows.map((s) => [idOf(s.UserScreenName), s]));
   const excluded = new Set((config.exclude ?? []).map(idOf));
 
   const inContest = submissions
@@ -97,7 +99,8 @@ export function convert({ config, top, submissions, standings, participants }: C
   const teams = teamIds.map((id): Team => {
     const person = listed.get(id);
     const row = official.get(id);
-    const team: Team = { id, name: person?.name ?? row?.UserName ?? id };
+    // 순위표 JSON의 표시 이름은 빈 문자열일 수 있다. 그때는 AtCoder 화면처럼 아이디를 쓴다.
+    const team: Team = { id, name: person?.name ?? (row?.UserName || id) };
     const affiliation = person?.affiliation ?? row?.Affiliation;
     if (affiliation) team.affiliation = affiliation;
     if (person?.group) team.group = person.group;
@@ -169,6 +172,8 @@ export interface Standing {
   rank: number;
   score: number;
   penalty: number;
+  /** 페널티까지 더한 시간(초). 점수가 없으면 0. */
+  time: number;
 }
 
 export interface OfficialMismatch {
@@ -178,8 +183,9 @@ export interface OfficialMismatch {
 }
 
 /**
- * 직접 계산한 순위표를 AtCoder 순위표 JSON과 견준다. 점수, 오답 수, 순위 가운데 하나라도 다르면 돌려준다.
+ * 직접 계산한 순위표를 AtCoder 순위표 JSON과 견준다. 점수, 오답 수, 시간, 순위 가운데 하나라도 다르면 돌려준다.
  * 운영진처럼 일부를 뺀 경우에도 비교되도록, 공식 순위는 우리 순위표에 실린 사람끼리 다시 매긴다.
+ * AtCoder 순위표 화면은 TotalResult.Elapsed를 그대로 시간으로 보여 주므로 이 값에는 페널티가 이미 들어 있다.
  */
 export function compareWithOfficial(rows: Row[], standings: AtCoderStandings): OfficialMismatch[] {
   const ours = new Set(rows.map((r) => r.team.id.toLowerCase()));
@@ -190,13 +196,15 @@ export function compareWithOfficial(rows: Row[], standings: AtCoderStandings): O
   for (const row of rows) {
     const theirs = byId.get(row.team.id.toLowerCase());
     if (!theirs) continue;
+    const score = theirs.TotalResult.Score / 100;
     const expected: Standing = {
       rank: 1 + official.filter((s) => s.Rank < theirs.Rank).length,
-      score: theirs.TotalResult.Score / 100,
+      score,
       penalty: theirs.TotalResult.Penalty,
+      time: score > 0 ? Math.round(theirs.TotalResult.Elapsed / 1e9) : 0,
     };
-    const computed: Standing = { rank: row.rank, score: row.score, penalty: row.penalty };
-    if (expected.rank !== computed.rank || expected.score !== computed.score || expected.penalty !== computed.penalty) {
+    const computed: Standing = { rank: row.rank, score: row.score, penalty: row.penalty, time: row.score > 0 ? row.time : 0 };
+    if ((Object.keys(expected) as (keyof Standing)[]).some((key) => expected[key] !== computed[key])) {
       mismatches.push({ teamId: row.team.id, official: expected, computed });
     }
   }

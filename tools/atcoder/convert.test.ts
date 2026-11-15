@@ -30,17 +30,20 @@ const input = (over: Partial<ConvertInput> = {}): ConvertInput => ({
   ...over,
 });
 
-const standings = (rows: [handle: string, rank: number, score: number, penalty: number][]): AtCoderStandings => ({
+const standings = (
+  rows: [handle: string, rank: number, score: number, penalty: number, elapsedSeconds?: number][],
+): AtCoderStandings => ({
   TaskInfo: [
     { Assignment: 'B', TaskName: '둘째', TaskScreenName: 'ycpc2026_b' },
     { Assignment: 'A', TaskName: '첫째', TaskScreenName: 'ycpc2026_a' },
   ],
-  StandingsData: rows.map(([handle, Rank, score, Penalty]) => ({
+  StandingsData: rows.map(([handle, Rank, score, Penalty, elapsed = 0]) => ({
     Rank,
     UserName: handle,
     UserScreenName: handle,
     Affiliation: `${handle} 소속`,
-    TotalResult: { Count: 1, Score: score * 100, Penalty, Elapsed: 0 },
+    // AtCoder는 점수를 100배로, 시간을 나노초로 준다.
+    TotalResult: { Count: 1, Score: score * 100, Penalty, Elapsed: elapsed * 1e9 },
     TaskResults: {},
   })),
 });
@@ -141,6 +144,24 @@ describe('convert: 참가자', () => {
     expect(data.teams.find((t) => t.id === 'alice')).toEqual({ id: 'alice', name: 'alice', affiliation: 'alice 소속' });
   });
 
+  it('순위표 JSON의 표시 이름이 비어 있으면 아이디를 이름으로 쓴다', () => {
+    const official = standings([['alice', 1, 100, 0]]);
+    official.StandingsData[0].UserName = '';
+    const { data } = convert(input({ standings: official }));
+    expect(data.teams.find((t) => t.id === 'alice')?.name).toBe('alice');
+  });
+
+  it('순위표 JSON에서 아이디가 빈 행은 참가자로 보지 않는다', () => {
+    const official = standings([
+      ['alice', 1, 100, 0],
+      ['', 2, 0, 0],
+    ]);
+    const { data } = convert(
+      input({ standings: official, config: { contestId: 'ycpc2026', freezeMinutesBeforeEnd: 30, includeNoSubmission: true } }),
+    );
+    expect(data.teams.map((t) => t.id)).toEqual(['alice', 'bob']);
+  });
+
   it('exclude에 적은 아이디는 참가자와 제출에서 모두 뺀다', () => {
     const { data } = convert(input({ config: { contestId: 'ycpc2026', freezeMinutesBeforeEnd: 30, exclude: ['Bob'] } }));
     expect(data.teams.map((t) => t.id)).toEqual(['alice']);
@@ -193,23 +214,46 @@ describe('compareWithOfficial', () => {
     ).data;
   const finalRows = () => buildBoard(data(), revealAll(data()));
 
-  it('점수, 오답 수, 순위가 모두 같으면 차이가 없다', () => {
+  // alice는 30분에 정답(1800초), bob은 40분에 오답 뒤 50분에 정답(3000초 + 페널티 1200초).
+  it('점수, 오답 수, 시간, 순위가 모두 같으면 차이가 없다', () => {
     const official = standings([
-      ['staff', 1, 100, 0],
-      ['alice', 2, 100, 0],
-      ['bob', 3, 100, 1],
+      ['staff', 1, 100, 0, 60],
+      ['alice', 2, 100, 0, 1800],
+      ['bob', 3, 100, 1, 4200],
     ]);
     expect(compareWithOfficial(finalRows(), official)).toEqual([]);
   });
 
   it('공식 순위표와 다른 참가자를 찾아낸다', () => {
     const official = standings([
-      ['bob', 1, 200, 0],
-      ['alice', 2, 100, 0],
+      ['bob', 1, 200, 0, 1000],
+      ['alice', 2, 100, 0, 1800],
     ]);
     expect(compareWithOfficial(finalRows(), official)).toEqual([
-      { teamId: 'alice', official: { rank: 2, score: 100, penalty: 0 }, computed: { rank: 1, score: 100, penalty: 0 } },
-      { teamId: 'bob', official: { rank: 1, score: 200, penalty: 0 }, computed: { rank: 2, score: 100, penalty: 1 } },
+      {
+        teamId: 'alice',
+        official: { rank: 2, score: 100, penalty: 0, time: 1800 },
+        computed: { rank: 1, score: 100, penalty: 0, time: 1800 },
+      },
+      {
+        teamId: 'bob',
+        official: { rank: 1, score: 200, penalty: 0, time: 1000 },
+        computed: { rank: 2, score: 100, penalty: 1, time: 4200 },
+      },
     ]);
+  });
+
+  it('순위와 점수가 같아도 시간이 다르면 찾아낸다', () => {
+    const official = standings([
+      ['alice', 1, 100, 0, 1800],
+      ['bob', 2, 100, 1, 3600],
+    ]);
+    expect(compareWithOfficial(finalRows(), official).map((m) => m.teamId)).toEqual(['bob']);
+  });
+
+  it('점수가 없는 참가자는 시간을 비교하지 않는다', () => {
+    const data = convert(input({ submissions: [raw('alice', 'A', '18:00:00', 'WA')] })).data;
+    const official = standings([['alice', 1, 0, 0, 999]]);
+    expect(compareWithOfficial(buildBoard(data, revealAll(data)), official)).toEqual([]);
   });
 });
