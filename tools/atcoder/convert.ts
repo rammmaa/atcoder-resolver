@@ -131,11 +131,34 @@ export function convert({ config, top, submissions, standings, participants }: C
     problems = [...seen.values()].sort((a, b) => a.label.localeCompare(b.label, 'en', { numeric: true }));
   }
 
+  const known = new Set(problems.map((problem) => problem.id));
+  const strayed = kept.filter((s) => !known.has(s.problemId)).length;
+  if (strayed > 0) {
+    warnings.push(`순위표의 문제 목록에 없는 문제로 낸 제출 ${strayed}건은 순위에 반영되지 않습니다. 문제 아이디를 확인해 주세요.`);
+  }
+
+  const everyone = new Set([...submitters, ...listed.keys(), ...official.keys()]);
+  const strangers = (config.exclude ?? []).filter((handle) => !everyone.has(idOf(handle)));
+  if (strangers.length > 0) {
+    warnings.push(`설정의 exclude에 적었지만 대회 자료에 없는 아이디 ${listNames(strangers)}. 오타가 아닌지 확인해 주세요.`);
+  }
+
   const waiting = kept.filter((s) => s.verdict === 'WJ').length;
   if (waiting > 0) {
     warnings.push(`채점이 끝나지 않은 제출이 ${waiting}건 있습니다. 채점이 끝난 뒤 다시 수집해야 최종 결과가 맞습니다.`);
   }
   if (participants) {
+    const seen = new Set<string>();
+    const repeated = new Set<string>();
+    for (const person of participants) {
+      const id = idOf(person.handle);
+      if (seen.has(id)) repeated.add(id);
+      seen.add(id);
+    }
+    if (repeated.size > 0) {
+      warnings.push(`명단에 두 번 나오는 아이디 ${listNames([...repeated].sort())}. 뒤에 나온 줄을 씁니다.`);
+    }
+
     const unlisted = [...submitters].filter((id) => !listed.has(id) && !excluded.has(id)).sort();
     if (unlisted.length > 0) {
       const fate = config.onlyListed ? '순위표에서 빠집니다.' : '순위표에는 AtCoder 아이디로 실립니다.';
@@ -182,20 +205,33 @@ export interface OfficialMismatch {
   computed: Standing;
 }
 
+export interface OfficialCheck {
+  /** 양쪽에 모두 있어서 실제로 견준 참가자 수. */
+  compared: number;
+  mismatches: OfficialMismatch[];
+  /** 우리 순위표에는 있는데 공식 순위표에 없어 견주지 못한 참가자. */
+  missing: string[];
+}
+
 /**
  * 직접 계산한 순위표를 AtCoder 순위표 JSON과 견준다. 점수, 오답 수, 시간, 순위 가운데 하나라도 다르면 돌려준다.
  * 운영진처럼 일부를 뺀 경우에도 비교되도록, 공식 순위는 우리 순위표에 실린 사람끼리 다시 매긴다.
  * AtCoder 순위표 화면은 TotalResult.Elapsed를 그대로 시간으로 보여 주므로 이 값에는 페널티가 이미 들어 있다.
+ * 견준 사람이 없으면 다른 점도 없으므로, 부르는 쪽은 mismatches와 함께 compared를 꼭 확인해야 한다.
  */
-export function compareWithOfficial(rows: Row[], standings: AtCoderStandings): OfficialMismatch[] {
+export function compareWithOfficial(rows: Row[], standings: AtCoderStandings): OfficialCheck {
   const ours = new Set(rows.map((r) => r.team.id.toLowerCase()));
-  const official = standings.StandingsData.filter((s) => ours.has(s.UserScreenName.toLowerCase()));
+  const official = standings.StandingsData.filter((s) => s.UserScreenName && ours.has(s.UserScreenName.toLowerCase()));
   const byId = new Map(official.map((s) => [s.UserScreenName.toLowerCase(), s]));
 
   const mismatches: OfficialMismatch[] = [];
+  const missing: string[] = [];
   for (const row of rows) {
     const theirs = byId.get(row.team.id.toLowerCase());
-    if (!theirs) continue;
+    if (!theirs) {
+      missing.push(row.team.id);
+      continue;
+    }
     const score = theirs.TotalResult.Score / 100;
     const expected: Standing = {
       rank: 1 + official.filter((s) => s.Rank < theirs.Rank).length,
@@ -208,5 +244,39 @@ export function compareWithOfficial(rows: Row[], standings: AtCoderStandings): O
       mismatches.push({ teamId: row.team.id, official: expected, computed });
     }
   }
-  return mismatches;
+  return { compared: rows.length - missing.length, mismatches, missing: missing.sort() };
+}
+
+export interface CountCheck {
+  /** match: 전부 같다. frozen: 프리즈 전 제출만 세면 같다. mismatch: 어느 쪽으로도 맞지 않는다. */
+  state: 'match' | 'frozen' | 'mismatch';
+  differing: { teamId: string; official: number; collected: number }[];
+}
+
+/**
+ * 참가자마다 받은 제출 수를 순위표 JSON의 제출 수(TotalResult.Count)와 견준다.
+ * 제출 목록을 받다가 빠뜨리거나 두 번 받은 것을 잡아내는 용도다.
+ * Count는 컴파일 에러와 정답 뒤의 제출까지 포함한 대회 중 제출 수다(SCPC 2026 Div.1 자료로 확인).
+ */
+export function compareSubmissionCounts(data: ContestData, standings: AtCoderStandings): CountCheck {
+  const all = new Map<string, number>();
+  const beforeFreeze = new Map<string, number>();
+  for (const s of data.submissions) {
+    all.set(s.teamId, (all.get(s.teamId) ?? 0) + 1);
+    if (s.time < data.contest.freezeSeconds) beforeFreeze.set(s.teamId, (beforeFreeze.get(s.teamId) ?? 0) + 1);
+  }
+  const official = new Map(
+    standings.StandingsData.filter((s) => s.UserScreenName).map((s) => [s.UserScreenName.toLowerCase(), s.TotalResult.Count]),
+  );
+  const differing = (counts: Map<string, number>) =>
+    data.teams.flatMap((team) => {
+      const theirs = official.get(team.id.toLowerCase());
+      const ours = counts.get(team.id) ?? 0;
+      return theirs === undefined || theirs === ours ? [] : [{ teamId: team.id, official: theirs, collected: ours }];
+    });
+
+  const full = differing(all);
+  if (full.length === 0) return { state: 'match', differing: [] };
+  if (differing(beforeFreeze).length === 0) return { state: 'frozen', differing: [] };
+  return { state: 'mismatch', differing: full };
 }

@@ -6,6 +6,8 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   base: './',
   plugins: [react(), viteSingleFile()],
+  // 다시 빌드해도 먼저 만들어 둔 시상식용 HTML이 지워지지 않게 한다.
+  build: { emptyOutDir: false },
   test: {
     include: ['src/**/*.test.ts', 'tools/**/*.test.ts'],
   },

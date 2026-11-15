@@ -58,40 +58,16 @@ body {
   letter-spacing: -0.025em;
 }
 
-.status {
-  margin: 0;
-  overflow: hidden;
-  font-size: clamp(14px, 1.35vw, 26px);
-  font-weight: 600;
-  color: var(--ink-2);
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  animation: status-in 0.25s ease both;
-}
-.status.tone-ok {
-  color: var(--ok-deep);
-}
-.status.tone-no {
-  color: var(--no);
-}
-.status.tone-wait {
-  color: #9a6400;
-}
-
-.progress {
+.side {
   display: flex;
   gap: 1.4vw;
+  margin: 0;
   font-size: clamp(12px, 1.05vw, 20px);
   color: var(--ink-3);
-  font-variant-numeric: tabular-nums;
 }
-.progress b {
-  color: var(--ink);
+.side .auto {
   font-weight: 700;
-}
-.progress .auto {
   color: var(--blue);
-  font-weight: 700;
 }
 
 .board {
@@ -361,13 +337,6 @@ body {
     transform: scale(1);
   }
 }
-@keyframes status-in {
-  from {
-    opacity: 0;
-    transform: translateY(0.4em);
-  }
-}
-
 /* ───────── 시상 화면 ───────── */
 
 .award {

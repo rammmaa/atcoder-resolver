@@ -94,6 +94,22 @@ describe('buildTimeline', () => {
     expect(picked).toEqual(['a', 'b', 'c']);
   });
 
+  it('확정된 줄에는 최종 순위를 적어서, 위에 있던 동점자가 나중에 올라가도 숫자가 바뀌지 않는다', () => {
+    // 프리즈 시점에는 네 명이 모두 0점 동점이고, 이름순 첫 참가자만 프리즈 뒤에 정답을 낸다.
+    const data = contest(['a', 'b', 'c', 'd'], [sub('a', 'a', 9100, 'AC')]);
+    const frames = buildTimeline(data);
+    expect(frames[0].rows.map((r) => r.rank)).toEqual([1, 1, 1, 1]);
+    const finals = frames.filter((f) => f.kind === 'final');
+    expect(finals.map((f) => [f.teamId, f.rows[f.cursor ?? 0].rank])).toEqual([
+      ['d', 2],
+      ['c', 2],
+      ['b', 2],
+      ['a', 1],
+    ]);
+    // 아직 확정되지 않은 줄은 그 시점의 순위 그대로다.
+    expect(finals[0].rows.slice(0, 3).map((r) => r.rank)).toEqual([1, 1, 1]);
+  });
+
   it('상을 받는 참가자는 순위가 확정된 직후에 시상 프레임이 나온다', () => {
     const data = contest(
       ['kim', 'lee'],
@@ -212,6 +228,15 @@ describe('assignAwards', () => {
       [{ name: '새내기 특별상', group: '새내기', count: 2 }],
     );
     expect(awardsOf(data)).toEqual({ lee: ['새내기 특별상'], park: ['새내기 특별상'] });
+  });
+
+  it('그룹 상도 마지막 자리에서 동점이면 함께 준다', () => {
+    const data = contest(
+      [freshman('kim'), freshman('lee'), freshman('park')],
+      [solved('kim', 100), solved('lee', 200), solved('park', 200)],
+      [{ name: '새내기 특별상', group: '새내기', count: 2 }],
+    );
+    expect(awardsOf(data)).toEqual({ kim: ['새내기 특별상'], lee: ['새내기 특별상'], park: ['새내기 특별상'] });
   });
 
   it('excludeAwarded면 이미 다른 상을 받은 참가자를 건너뛴다', () => {

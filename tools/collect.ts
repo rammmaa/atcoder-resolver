@@ -9,31 +9,34 @@
  *
  * 옵션
  *   --offline      AtCoder에 접속하지 않고 raw/<contestId>/에 있는 파일만 쓴다
- *   --fresh        받아 둔 제출 목록을 믿지 않고 전부 다시 받는다
  *   --delay <ms>   요청 사이에 쉬는 시간. 기본 1000
  *   --out <path>   결과 파일 경로. 기본은 설정 파일 이름에서 .config를 뺀 것
  */
-import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join, resolve } from 'node:path';
 import { formatClock } from '../src/core/load';
 import { buildTimeline } from '../src/core/resolver';
 import { buildBoard, revealAll } from '../src/core/scoring';
 import type { ContestData } from '../src/core/types';
-import { type AtCoderStandings, compareWithOfficial, convert, type OfficialMismatch, type ResolverConfig } from './atcoder/convert';
+import {
+  type AtCoderStandings,
+  compareSubmissionCounts,
+  compareWithOfficial,
+  convert,
+  type OfficialMismatch,
+  type ResolverConfig,
+} from './atcoder/convert';
+import { type Downloaded, download, LoginRequired } from './atcoder/download';
 import { parseContestTop, parseParticipantsCsv, parseSubmissionsPage, type RawSubmission } from './atcoder/parse';
 import { toCookieHeader } from './atcoder/session';
 
 const BASE = 'https://atcoder.jp';
-const PAGE_SIZE = 20;
-
-class LoginRequired extends Error {}
+const RAW_FILE = /^(top\.html|standings\.json|submissions-\d+\.html)$/;
 
 const args = process.argv.slice(2);
 const flag = (name: string) => args.includes(name);
 const option = (name: string) => (args.includes(name) ? args[args.indexOf(name) + 1] : undefined);
 const configPath = args.find((a, i) => !a.startsWith('--') && !['--delay', '--out'].includes(args[i - 1]));
-
-const sleep = (ms: number) => new Promise((done) => setTimeout(done, ms));
 
 async function get(path: string): Promise<string> {
   const cookie = toCookieHeader(process.env.ATCODER_SESSION);
@@ -50,58 +53,15 @@ async function get(path: string): Promise<string> {
   return res.text();
 }
 
-const pageFile = (rawDir: string, page: number) => join(rawDir, `submissions-${page}.html`);
-
-/** 제출 시각이 오름차순인 화면인지. 오름차순이면 꽉 찬 쪽은 다시 받아도 내용이 같다. */
-const isAscending = (subs: RawSubmission[]) =>
-  subs.length < 2 || Date.parse(subs[0].time) <= Date.parse(subs[subs.length - 1].time);
-
-async function download(contestId: string, rawDir: string, fresh: boolean, delay: number): Promise<void> {
+/** 받은 원본을 raw/<contestId>/에 둔다. 이전 실행의 파일이 섞이지 않게 먼저 지운다. */
+function saveRaw(rawDir: string, downloaded: Downloaded): void {
   mkdirSync(rawDir, { recursive: true });
-
-  const topHtml = await get(`/contests/${contestId}?lang=en`);
-  writeFileSync(join(rawDir, 'top.html'), topHtml);
-  const endMs = Date.parse(parseContestTop(topHtml).endTime);
-
-  try {
-    writeFileSync(join(rawDir, 'standings.json'), await get(`/contests/${contestId}/standings/json`));
-  } catch (e) {
-    console.warn(`! 순위표 JSON을 받지 못했습니다. 공식 순위와 대조하는 단계를 건너뜁니다. (${(e as Error).message || '로그인 필요'})`);
+  for (const name of readdirSync(rawDir)) {
+    if (RAW_FILE.test(name)) rmSync(join(rawDir, name));
   }
-
-  let reuse = !fresh;
-  let lastPage = 1;
-  let fetched = 0;
-  for (let page = 1; page <= lastPage; page++) {
-    const file = pageFile(rawDir, page);
-    let html: string | null = null;
-
-    if (reuse && existsSync(file)) {
-      const cached = parseSubmissionsPage(readFileSync(file, 'utf8'));
-      const settled = cached.submissions.length === PAGE_SIZE && cached.submissions.every((s) => s.verdict !== 'WJ');
-      if (settled && isAscending(cached.submissions)) html = readFileSync(file, 'utf8');
-    }
-    if (html === null) {
-      if (fetched > 0) await sleep(delay);
-      html = await get(`/contests/${contestId}/submissions?orderBy=created&page=${page}&lang=en`);
-      writeFileSync(file, html);
-      fetched += 1;
-    }
-
-    const parsed = parseSubmissionsPage(html);
-    lastPage = Math.max(lastPage, parsed.lastPage);
-    process.stdout.write(`\r제출 목록 ${page} / ${lastPage}쪽 (새로 받은 쪽 ${fetched})   `);
-    if (parsed.submissions.length === 0) break;
-
-    if (!isAscending(parsed.submissions)) {
-      // 최신순 화면이면 받는 동안 새 제출이 들어올 때 쪽이 밀린다. 받아 둔 것을 믿지 않는다.
-      reuse = false;
-    } else if (Date.parse(parsed.submissions[0].time) >= endMs) {
-      // 여기부터는 대회가 끝난 뒤의 연습 제출이다.
-      break;
-    }
-  }
-  process.stdout.write('\n');
+  writeFileSync(join(rawDir, 'top.html'), downloaded.top);
+  if (downloaded.standings !== null) writeFileSync(join(rawDir, 'standings.json'), downloaded.standings);
+  downloaded.pages.forEach((html, i) => writeFileSync(join(rawDir, `submissions-${i + 1}.html`), html));
 }
 
 function readRaw(rawDir: string) {
@@ -118,12 +78,14 @@ function readRaw(rawDir: string) {
     .map((name) => Number(name.match(/^submissions-(\d+)\.html$/)?.[1]))
     .filter((n) => Number.isInteger(n))
     .sort((a, b) => a - b);
-  // 쪽이 밀려 같은 제출을 두 번 받았을 수 있으니 번호로 한 번만 남긴다.
+  // 받는 도중에 쪽이 밀려 같은 제출이 두 번 들어왔을 수 있으니 제출 번호로 한 번만 남긴다.
   const byId = new Map<number, RawSubmission>();
   for (const page of pages) {
-    for (const s of parseSubmissionsPage(readFileSync(pageFile(rawDir, page), 'utf8')).submissions) byId.set(s.id, s);
+    for (const s of parseSubmissionsPage(readFileSync(join(rawDir, `submissions-${page}.html`), 'utf8')).submissions) {
+      byId.set(s.id, s);
+    }
   }
-  return { top, standings, submissions: [...byId.values()] };
+  return { top, standings, submissions: [...byId.values()], pageCount: pages.length };
 }
 
 function describeMismatches(list: OfficialMismatch[]): string {
@@ -138,33 +100,57 @@ function describeMismatches(list: OfficialMismatch[]): string {
   return lines.join('\n');
 }
 
+function checkSubmissionCounts(data: ContestData, standings: AtCoderStandings): void {
+  const { state, differing } = compareSubmissionCounts(data, standings);
+  if (state === 'match') {
+    console.log('제출 수 대조: 참가자마다 받은 제출 수가 공식 순위표의 제출 수와 모두 같습니다.');
+  } else if (state === 'frozen') {
+    console.log('제출 수 대조: 프리즈 전 제출 수가 공식 순위표와 모두 같습니다. 공식 순위표는 프리즈 뒤 제출을 아직 세지 않고 있습니다.');
+  } else {
+    const list = differing
+      .slice(0, 10)
+      .map((d) => `${d.teamId}(공식 ${d.official}건, 받은 것 ${d.collected}건)`)
+      .join(', ');
+    console.warn(`! 제출 수 대조: ${differing.length}명의 제출 수가 공식 순위표와 다릅니다. 빠뜨렸거나 두 번 받은 제출이 있을 수 있습니다: ${list}`);
+  }
+}
+
 function checkAgainstOfficial(data: ContestData, standings: AtCoderStandings): void {
   const diff = (d: ContestData) => ({
     final: compareWithOfficial(buildBoard(d, revealAll(d)), standings),
     frozen: compareWithOfficial(buildBoard(d, new Set()), standings),
   });
   const ours = diff(data);
-  if (ours.final.length === 0) {
-    console.log(`공식 순위표 대조: 최종 순위표가 ${data.teams.length}명 모두 일치합니다.`);
+  const { compared, missing } = ours.final;
+  if (compared === 0) {
+    console.warn('! 공식 순위표 대조: 견줄 수 있는 참가자가 한 명도 없습니다. 순위표 JSON이 비었거나 아이디가 전혀 겹치지 않습니다.');
     return;
   }
-  if (ours.frozen.length === 0) {
-    console.log('공식 순위표 대조: AtCoder 순위표가 아직 프리즈 상태입니다. 프리즈 시점 순위표와는 모두 일치합니다.');
+  if (missing.length > 0) {
+    console.warn(`! 공식 순위표에 없는 참가자 ${missing.length}명은 대조하지 못했습니다: ${missing.slice(0, 10).join(', ')}`);
+  }
+  if (ours.final.mismatches.length === 0) {
+    console.log(`공식 순위표 대조: ${compared}명의 점수, 오답 수, 시간, 순위가 최종 순위표와 모두 일치합니다.`);
+    return;
+  }
+  if (ours.frozen.mismatches.length === 0) {
+    console.log(`공식 순위표 대조: AtCoder 순위표가 아직 프리즈 상태입니다. ${compared}명 모두 프리즈 시점 순위표와 일치합니다.`);
+    console.log('  프리즈 뒤의 제출은 아직 대조하지 못했습니다. 프리즈가 풀린 뒤 다시 받으면 최종 순위까지 확인할 수 있습니다.');
     return;
   }
 
-  const closer = ours.final.length <= ours.frozen.length ? ours.final : ours.frozen;
-  console.warn(`! 공식 순위표 대조: ${closer.length}명이 다릅니다.\n${describeMismatches(closer)}`);
+  const closer = ours.final.mismatches.length <= ours.frozen.mismatches.length ? ours.final : ours.frozen;
+  console.warn(`! 공식 순위표 대조: ${compared}명 가운데 ${closer.mismatches.length}명이 다릅니다.\n${describeMismatches(closer.mismatches)}`);
   const otherRule = data.contest.rule === 'sum' ? 'last' : 'sum';
   const other = diff({ ...data, contest: { ...data.contest, rule: otherRule } });
-  if (other.final.length === 0 || other.frozen.length === 0) {
+  if (other.final.mismatches.length === 0 || other.frozen.mismatches.length === 0) {
     console.warn(`! 설정의 rule을 "${otherRule}"로 바꾸면 공식 순위표와 일치합니다.`);
   }
 }
 
 async function main() {
   if (!configPath) {
-    console.error('사용법: pnpm collect <설정 파일.json> [--offline] [--fresh] [--delay ms] [--out 경로]');
+    console.error('사용법: pnpm collect <설정 파일.json> [--offline] [--delay ms] [--out 경로]');
     process.exit(2);
   }
   const config = JSON.parse(readFileSync(configPath, 'utf8')) as ResolverConfig;
@@ -174,7 +160,17 @@ async function main() {
   const rawDir = resolve('raw', config.contestId);
 
   if (!flag('--offline')) {
-    await download(config.contestId, rawDir, flag('--fresh'), Number(option('--delay') ?? 1000));
+    const downloaded = await download(config.contestId, {
+      get,
+      sleep: (ms) => new Promise((done) => setTimeout(done, ms)),
+      delay: Number(option('--delay') ?? 1000),
+      onPage: (page) => process.stdout.write(`\r제출 목록 ${page}쪽 받는 중   `),
+    });
+    process.stdout.write('\n');
+    if (downloaded.standings === null) {
+      console.warn(`! 순위표 JSON을 받지 못했습니다(${downloaded.standingsError}). 공식 순위와 대조하지 않습니다.`);
+    }
+    saveRaw(rawDir, downloaded);
   }
 
   const raw = readRaw(rawDir);
@@ -193,10 +189,14 @@ async function main() {
   console.log(`대회: ${contest.title} (${contest.id})`);
   console.log(`시간: ${contest.startTime}부터 ${contest.durationSeconds / 60}분, ${formatClock(contest.freezeSeconds)}부터 프리즈`);
   console.log(`규칙: ${contest.rule}, 오답 페널티 ${contest.penaltySeconds / 60}분`);
-  console.log(`참가자 ${data.teams.length}명, 문제 ${data.problems.length}개, 제출 ${data.submissions.length}건 (프리즈 이후 ${hidden}건)`);
+  console.log(`받은 제출 목록 ${raw.pageCount}쪽, 그 가운데 대회 시간 안의 제출 ${data.submissions.length}건 (프리즈 이후 ${hidden}건)`);
+  console.log(`참가자 ${data.teams.length}명, 문제 ${data.problems.length}개`);
   console.log(`공개 단계 ${frames.length}장, 결과 공개 ${frames.filter((f) => f.kind === 'reveal').length}번`);
   for (const w of warnings) console.warn(`! ${w}`);
-  if (raw.standings) checkAgainstOfficial(data, raw.standings);
+  if (raw.standings) {
+    checkSubmissionCounts(data, raw.standings);
+    checkAgainstOfficial(data, raw.standings);
+  }
   console.log(`저장: ${out}`);
   console.log(`다음: pnpm bundle ${out}`);
 }

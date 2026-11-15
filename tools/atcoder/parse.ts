@@ -18,7 +18,11 @@ export interface RawSubmission {
 
 export interface SubmissionsPage {
   submissions: RawSubmission[];
-  lastPage: number;
+  /**
+   * 쪽 이동 링크가 가리키는 가장 큰 쪽 번호. 지금 쪽보다 크면 받을 쪽이 더 있다. 링크가 없으면 0.
+   * 지금의 AtCoder는 앞뒤 링크만 보여 주므로 마지막 쪽 번호를 미리 알 수는 없다.
+   */
+  lastLinkedPage: number;
 }
 
 export interface ContestTop {
@@ -49,19 +53,20 @@ const normalizeVerdict = (label: string) => (/^(WJ|WR|Judging)$/i.test(label) ||
 /**
  * 제출 목록 화면(/contests/{id}/submissions) 한 쪽을 읽는다.
  * 화면 언어나 열 순서가 달라도 읽히도록 열 위치가 아니라 칸 안의 링크와 클래스로 값을 찾는다.
+ * 읽지 못한 행이 있으면 버리지 않고 오류를 낸다. 제출이 조용히 빠지면 순위가 틀리기 때문이다.
  */
 export function parseSubmissionsPage(html: string): SubmissionsPage {
   const $ = cheerio.load(html);
   const submissions: RawSubmission[] = [];
 
-  $('td.submission-score').each((_, el) => {
+  $('td.submission-score').each((index, el) => {
     const scoreCell = $(el);
     const row = scoreCell.closest('tr');
     const taskLink = row.find('a[href*="/tasks/"]').first();
     const userHref = row.find('a[href^="/users/"]').first().attr('href') ?? '';
     const [taskLabel, ...titleParts] = taskLink.text().trim().split(' - ');
 
-    submissions.push({
+    const submission: RawSubmission = {
       id: Number(scoreCell.attr('data-id')),
       time: toIso(row.find('time').first().text()),
       taskId: (taskLink.attr('href') ?? '').split('/tasks/')[1] ?? '',
@@ -70,14 +75,30 @@ export function parseSubmissionsPage(html: string): SubmissionsPage {
       user: decodeURIComponent(userHref.replace('/users/', '')),
       score: Number(scoreCell.text().trim()),
       verdict: normalizeVerdict(row.find('span.label').first().text().trim()),
-    });
+    };
+
+    const unreadable =
+      (!(Number.isInteger(submission.id) && submission.id > 0) && '제출 번호') ||
+      (!Number.isFinite(Date.parse(submission.time)) && '제출 시각') ||
+      (!submission.taskId && '문제') ||
+      (!submission.user && '참가자') ||
+      (!Number.isFinite(submission.score) && '점수') ||
+      (!submission.verdict && '판정');
+    if (unreadable) {
+      throw new Error(`제출 목록의 ${index + 1}번째 행에서 ${unreadable}을(를) 읽지 못했습니다. AtCoder 화면 구성이 바뀌었을 수 있습니다.`);
+    }
+    submissions.push(submission);
   });
 
-  const pageNumbers = $('ul.pagination a')
-    .map((_, a) => Number($(a).text().trim()))
+  if (submissions.length === 0 && $('.panel-submission').length === 0) {
+    throw new Error(`제출 목록 화면이 아닌 것을 받았습니다. 받은 화면의 제목: "${$('title').text().trim()}"`);
+  }
+
+  const linkedPages = $('ul.pager a[href], ul.pagination a[href]')
+    .map((_, a) => Number(new URL($(a).attr('href') ?? '', 'https://atcoder.jp').searchParams.get('page')))
     .get()
-    .filter((n) => Number.isInteger(n));
-  return { submissions, lastPage: Math.max(1, ...pageNumbers) };
+    .filter((n) => Number.isInteger(n) && n > 0);
+  return { submissions, lastLinkedPage: Math.max(0, ...linkedPages) };
 }
 
 /** 대회 첫 화면(/contests/{id})에서 이름과 시각, 페널티를 읽는다. 로그인 없이 열리는 화면이다. */

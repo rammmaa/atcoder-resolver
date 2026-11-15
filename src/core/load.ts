@@ -37,6 +37,34 @@ function needUniqueIds(root: Json, key: string) {
   }
 }
 
+/** 상 구성은 잘못 적으면 화면이 죽거나 상이 조용히 사라지므로 꼴을 꼼꼼히 본다. */
+function needAwards(root: Json) {
+  const awards = root.awards;
+  if (awards === undefined) return;
+  if (!Array.isArray(awards)) fail('awards', '배열이어야 합니다.');
+  awards.forEach((award, i) => {
+    const path = `awards[${i}]`;
+    if (!isObject(award)) fail(path, '객체여야 합니다.');
+    need(award, path, 'name', 'string');
+
+    if (award.rank !== undefined) {
+      const range = award.rank;
+      const ok =
+        Array.isArray(range) &&
+        range.length === 2 &&
+        range.every((n) => Number.isInteger(n) && n >= 1) &&
+        range[0] <= range[1];
+      if (!ok) fail(`${path}.rank`, '[시작 순위, 끝 순위] 꼴이어야 합니다. 예: [2, 3]');
+    } else if (typeof award.group === 'string' && award.group !== '') {
+      if (award.count !== undefined && !(Number.isInteger(award.count) && (award.count as number) >= 1)) {
+        fail(`${path}.count`, '1 이상의 정수여야 합니다.');
+      }
+    } else {
+      fail(path, 'rank(순위 구간)나 group(그룹 이름) 가운데 하나가 있어야 합니다.');
+    }
+  });
+}
+
 /** JSON 문자열을 읽어 형식을 확인한다. 틀린 곳이 있으면 어느 항목인지 적어 오류를 낸다. */
 export function parseContestData(text: string): ContestData {
   let root: unknown;
@@ -66,7 +94,7 @@ export function parseContestData(text: string): ContestData {
   );
   needUniqueIds(root, 'problems');
   needUniqueIds(root, 'teams');
-  if (root.awards !== undefined) needList(root, 'awards', { name: 'string' }, true);
+  needAwards(root);
 
   return root as unknown as ContestData;
 }

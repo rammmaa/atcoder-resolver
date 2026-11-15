@@ -1,12 +1,12 @@
 {
  "contest": {
   "id": "sample",
-  "title": "모의 대회 (샘플 데이터)",
+  "title": "Sample Contest",
   "startTime": "2026-11-27T17:30:00+09:00",
   "durationSeconds": 10800,
   "freezeSeconds": 9000,
-  "rule": "sum",
-  "penaltySeconds": 1200
+  "rule": "last",
+  "penaltySeconds": 300
  },
  "problems": [
   {
@@ -61,213 +61,213 @@
  "teams": [
   {
    "id": "zechika65",
-   "name": "최준서",
-   "affiliation": "컴퓨터과학과"
+   "name": "Ivan Garcia",
+   "affiliation": "Computer Science"
   },
   {
    "id": "loyuze72",
-   "name": "장가온",
-   "affiliation": "경제학부"
+   "name": "Aiko Rossi",
+   "affiliation": "Economics"
   },
   {
    "id": "losume81",
-   "name": "정소율",
-   "affiliation": "컴퓨터과학과"
+   "name": "Hugo Smith",
+   "affiliation": "Computer Science"
   },
   {
    "id": "hamira64",
-   "name": "윤하늘",
-   "affiliation": "기계공학부"
+   "name": "Alex Müller",
+   "affiliation": "Mechanical Engineering"
   },
   {
    "id": "lotoka51",
-   "name": "최가온",
-   "affiliation": "산업공학과",
-   "group": "새내기"
+   "name": "Aiko Garcia",
+   "affiliation": "Industrial Engineering",
+   "group": "rookie"
   },
   {
    "id": "chikayu24",
-   "name": "박준서",
-   "affiliation": "기계공학부"
+   "name": "Ivan Park",
+   "affiliation": "Mechanical Engineering"
   },
   {
    "id": "dolori61",
-   "name": "윤선우",
-   "affiliation": "첨단컴퓨팅학부",
-   "group": "새내기"
+   "name": "Milo Müller",
+   "affiliation": "Software",
+   "group": "rookie"
   },
   {
    "id": "meribe17",
-   "name": "정지안",
-   "affiliation": "인공지능학과",
-   "group": "새내기"
+   "name": "Lucia Smith",
+   "affiliation": "Artificial Intelligence",
+   "group": "rookie"
   },
   {
    "id": "surato83",
-   "name": "오보민",
-   "affiliation": "물리학과"
+   "name": "Hana Ivanov",
+   "affiliation": "Physics"
   },
   {
    "id": "zenobe74",
-   "name": "한선우",
-   "affiliation": "경제학부",
-   "group": "새내기"
+   "name": "Milo Novak",
+   "affiliation": "Economics",
+   "group": "rookie"
   },
   {
    "id": "donelo44",
-   "name": "신가온",
-   "affiliation": "첨단컴퓨팅학부"
+   "name": "Aiko Singh",
+   "affiliation": "Software"
   },
   {
    "id": "mirimi83",
-   "name": "장채원",
-   "affiliation": "컴퓨터과학과"
+   "name": "Kai Rossi",
+   "affiliation": "Computer Science"
   },
   {
    "id": "nehane85",
-   "name": "김나윤",
-   "affiliation": "첨단컴퓨팅학부",
-   "group": "새내기"
+   "name": "Jun Kim",
+   "affiliation": "Software",
+   "group": "rookie"
   },
   {
    "id": "menedo48",
-   "name": "최보민",
-   "affiliation": "인공지능학과"
+   "name": "Hana Garcia",
+   "affiliation": "Artificial Intelligence"
   },
   {
    "id": "mezera87",
-   "name": "장건우",
-   "affiliation": "도시공학과"
+   "name": "Zoe Rossi",
+   "affiliation": "Urban Planning"
   },
   {
    "id": "hadone65",
-   "name": "조라온",
-   "affiliation": "첨단컴퓨팅학부"
+   "name": "Rosa Nguyen",
+   "affiliation": "Software"
   },
   {
    "id": "sunoto20",
-   "name": "정민재",
-   "affiliation": "인공지능학과"
+   "name": "Lena Smith",
+   "affiliation": "Artificial Intelligence"
   },
   {
    "id": "rasuka39",
-   "name": "최건우",
-   "affiliation": "인공지능학과"
+   "name": "Zoe Garcia",
+   "affiliation": "Artificial Intelligence"
   },
   {
    "id": "menemi16",
-   "name": "강민재",
-   "affiliation": "수학과",
-   "group": "새내기"
+   "name": "Lena Tanaka",
+   "affiliation": "Mathematics",
+   "group": "rookie"
   },
   {
    "id": "zelori30",
-   "name": "강지안",
-   "affiliation": "컴퓨터과학과",
-   "group": "새내기"
+   "name": "Lucia Tanaka",
+   "affiliation": "Computer Science",
+   "group": "rookie"
   },
   {
    "id": "midoka76",
-   "name": "임건우",
-   "affiliation": "물리학과"
+   "name": "Zoe Silva",
+   "affiliation": "Physics"
   },
   {
    "id": "chimino47",
-   "name": "오라온",
-   "affiliation": "첨단컴퓨팅학부"
+   "name": "Rosa Ivanov",
+   "affiliation": "Software"
   },
   {
    "id": "chimeka60",
-   "name": "강건우",
-   "affiliation": "수학과"
+   "name": "Zoe Tanaka",
+   "affiliation": "Mathematics"
   },
   {
    "id": "suneri43",
-   "name": "정유찬",
-   "affiliation": "전기전자공학부",
-   "group": "새내기"
+   "name": "Iris Smith",
+   "affiliation": "Electrical Engineering",
+   "group": "rookie"
   },
   {
    "id": "nenodo27",
-   "name": "강가온",
-   "affiliation": "전기전자공학부"
+   "name": "Aiko Tanaka",
+   "affiliation": "Electrical Engineering"
   },
   {
    "id": "yubene66",
-   "name": "정보민",
-   "affiliation": "컴퓨터과학과"
+   "name": "Hana Smith",
+   "affiliation": "Computer Science"
   },
   {
    "id": "loraha39",
-   "name": "조아린",
-   "affiliation": "첨단컴퓨팅학부"
+   "name": "Sara Nguyen",
+   "affiliation": "Software"
   },
   {
    "id": "chibedo73",
-   "name": "신선우",
-   "affiliation": "문헌정보학과"
+   "name": "Milo Singh",
+   "affiliation": "Information Science"
   },
   {
    "id": "nenochi97",
-   "name": "임가온",
-   "affiliation": "인공지능학과"
+   "name": "Aiko Silva",
+   "affiliation": "Artificial Intelligence"
   },
   {
    "id": "losube95",
-   "name": "장보민",
-   "affiliation": "경제학부"
+   "name": "Hana Rossi",
+   "affiliation": "Economics"
   },
   {
    "id": "mechira58",
-   "name": "김수아",
-   "affiliation": "인공지능학과"
+   "name": "Yuna Kim",
+   "affiliation": "Artificial Intelligence"
   },
   {
    "id": "kahame25",
-   "name": "윤라온",
-   "affiliation": "경제학부"
+   "name": "Rosa Müller",
+   "affiliation": "Economics"
   },
   {
    "id": "tohano47",
-   "name": "강준서",
-   "affiliation": "기계공학부"
+   "name": "Ivan Tanaka",
+   "affiliation": "Mechanical Engineering"
   },
   {
    "id": "nezesu88",
-   "name": "정지호",
-   "affiliation": "문헌정보학과"
+   "name": "Leo Smith",
+   "affiliation": "Information Science"
   },
   {
    "id": "chimize57",
-   "name": "서나윤",
-   "affiliation": "인공지능학과"
+   "name": "Jun Chen",
+   "affiliation": "Artificial Intelligence"
   },
   {
    "id": "hadoyu39",
-   "name": "서선우",
-   "affiliation": "전기전자공학부"
+   "name": "Milo Chen",
+   "affiliation": "Electrical Engineering"
   },
   {
    "id": "rimiyu35",
-   "name": "권준서",
-   "affiliation": "물리학과"
+   "name": "Ivan Okafor",
+   "affiliation": "Physics"
   },
   {
    "id": "suchisu39",
-   "name": "김선우",
-   "affiliation": "전기전자공학부"
+   "name": "Milo Kim",
+   "affiliation": "Electrical Engineering"
   },
   {
    "id": "neloka24",
-   "name": "신지안",
-   "affiliation": "경제학부",
-   "group": "새내기"
+   "name": "Lucia Singh",
+   "affiliation": "Economics",
+   "group": "rookie"
   },
   {
    "id": "lobeka12",
-   "name": "윤이든",
-   "affiliation": "첨단컴퓨팅학부",
-   "group": "새내기"
+   "name": "Owen Müller",
+   "affiliation": "Software",
+   "group": "rookie"
   }
  ],
  "submissions": [
@@ -3426,36 +3426,36 @@
  ],
  "awards": [
   {
-   "name": "1등상",
+   "name": "1st Prize",
    "rank": [
     1,
     1
    ]
   },
   {
-   "name": "2등상",
+   "name": "2nd Prize",
    "rank": [
     2,
     3
    ]
   },
   {
-   "name": "3등상",
+   "name": "3rd Prize",
    "rank": [
     4,
     6
    ]
   },
   {
-   "name": "4등상",
+   "name": "Honorable Mention",
    "rank": [
     7,
     10
    ]
   },
   {
-   "name": "새내기 특별상",
-   "group": "새내기",
+   "name": "Rookie Award",
+   "group": "rookie",
    "count": 2,
    "excludeAwarded": true
   }

@@ -31,8 +31,8 @@ describe('parseSubmissionsPage', () => {
     expect(ce).toMatchObject({ verdict: 'CE', score: 0 });
   });
 
-  it('쪽 번호 목록에서 마지막 쪽을 읽는다', () => {
-    expect(page.lastPage).toBe(2208);
+  it('쪽 번호 목록이 있으면 연결된 가장 뒤쪽 번호를 읽는다', () => {
+    expect(page.lastLinkedPage).toBe(2208);
   });
 
   it('채점이 끝나지 않은 제출은 판정을 WJ로 통일한다', () => {
@@ -44,10 +44,53 @@ describe('parseSubmissionsPage', () => {
   });
 
   it('제출이 없는 화면에서는 빈 목록을 돌려준다', () => {
-    expect(parseSubmissionsPage('<html><body><p>There is no submission.</p></body></html>')).toEqual({
-      submissions: [],
-      lastPage: 1,
-    });
+    const html = '<html><body><div class="panel panel-default panel-submission"><p>There is no submission.</p></div></body></html>';
+    expect(parseSubmissionsPage(html)).toEqual({ submissions: [], lastLinkedPage: 0 });
+  });
+
+  it('제출 목록 화면이 아닌 것을 받으면 빈 목록으로 넘기지 않고 오류를 낸다', () => {
+    expect(() => parseSubmissionsPage('<html><title>502 Bad Gateway</title><body>error</body></html>')).toThrow(
+      /502 Bad Gateway/,
+    );
+  });
+});
+
+// 2026-11-15에 로그인한 세션으로 확인한 지금의 화면. 쪽 번호 대신 앞뒤 링크만 있다.
+describe('parseSubmissionsPage: 앞뒤 링크만 있는 화면', () => {
+  const withPager = (pager: string) =>
+    fixture('abc107_submissions.html').replace(/<ul class="pagination[\s\S]*?<\/ul>/g, pager);
+  const link = (label: string, page?: number) =>
+    page === undefined
+      ? `<li class="disabled"><a>${label}</a></li>`
+      : `<li><a href="/contests/abc107/submissions?orderBy=created&amp;page=${page}">${label}</a></li>`;
+  const pager = (prev?: number, next?: number) =>
+    `<nav><ul class="pager">${link('&lt; Prev', prev)}${link('Next &gt;', next)}</ul></nav>`;
+
+  it('첫 쪽에서는 다음 쪽 번호를 읽는다', () => {
+    const page = parseSubmissionsPage(withPager(pager(undefined, 2)));
+    expect(page.submissions).toHaveLength(20);
+    expect(page.lastLinkedPage).toBe(2);
+  });
+
+  it('가운데 쪽에서는 다음 쪽 번호를 읽는다', () => {
+    expect(parseSubmissionsPage(withPager(pager(6, 8))).lastLinkedPage).toBe(8);
+  });
+
+  it('마지막 쪽에서는 지금 쪽보다 큰 번호가 나오지 않는다', () => {
+    expect(parseSubmissionsPage(withPager(pager(6, undefined))).lastLinkedPage).toBe(6);
+  });
+});
+
+describe('parseSubmissionsPage: 읽지 못한 행', () => {
+  const broken = (from: string, to: string) => fixture('abc107_submissions.html').replace(from, to);
+
+  it.each([
+    ['제출 번호', 'data-id="22755871"', 'data-id=""'],
+    ['제출 시각', "2021-05-21 02:31:55+0900", '방금 전'],
+    ['참가자', 'href="/users/Chris_wsd"', 'href="/somewhere"'],
+    ['판정', 'title="Accepted">AC<', 'title="">  <'],
+  ])('%s을(를) 읽지 못하면 그 행을 버리지 않고 오류를 낸다', (what, from, to) => {
+    expect(() => parseSubmissionsPage(broken(from, to))).toThrow(new RegExp(what));
   });
 });
 

@@ -35,10 +35,25 @@ describe('parseContestData', () => {
     ['참가자에 이름이 없을 때', (d: any) => delete d.teams[0].name, /teams\[0\]\.name/],
     ['제출 시각이 없을 때', (d: any) => delete d.submissions[0].time, /submissions\[0\]\.time/],
     ['참가자 아이디가 겹칠 때', (d: any) => d.teams.push({ id: 'kim', name: '김2' }), /kim/],
+    ['상의 순위 구간이 배열이 아닐 때', (d: any) => (d.awards = [{ name: '1등상', rank: 1 }]), /awards\[0\]\.rank/],
+    ['상의 순위 구간이 거꾸로일 때', (d: any) => (d.awards = [{ name: '상', rank: [3, 1] }]), /awards\[0\]\.rank/],
+    ['상에 순위 구간도 그룹도 없을 때', (d: any) => (d.awards = [{ name: '상', ranks: [1, 3] }]), /awards\[0\]/],
+    ['그룹 상의 인원이 숫자가 아닐 때', (d: any) => (d.awards = [{ name: '상', group: '새내기', count: '2' }]), /awards\[0\]\.count/],
   ])('%s 어느 항목이 문제인지 알린다', (_, breakIt, message) => {
     const data = valid();
     breakIt(data);
     expect(() => parseContestData(JSON.stringify(data))).toThrow(message);
+  });
+});
+
+describe('parseContestData: 상 구성', () => {
+  it('순위 구간 상과 그룹 상을 받아들인다', () => {
+    const data = valid();
+    data.awards = [
+      { name: '1등상', rank: [1, 1] },
+      { name: '새내기 특별상', group: '새내기', count: 2, excludeAwarded: true },
+    ];
+    expect(parseContestData(JSON.stringify(data)).awards).toEqual(data.awards);
   });
 });
 

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { formatClock } from '../core/load';
-import { assignAwards, buildTimeline, type Frame, type FrameKind } from '../core/resolver';
+import { assignAwards, buildTimeline, type FrameKind } from '../core/resolver';
 import type { ContestData } from '../core/types';
 import { AwardOverlay } from './AwardOverlay';
 import { Board } from './Board';
@@ -14,6 +13,10 @@ const AUTO_DELAY: Record<FrameKind, number> = {
   award: 0,
   end: 0,
 };
+
+// 글자 키는 e.key가 아니라 e.code로 본다. 한글 입력 상태에서는 e.key가 'ㅁ'처럼 들어와 단축키가 먹지 않는다.
+const FORWARD = new Set(['ArrowRight', 'Space', 'Enter', 'NumpadEnter', 'PageDown']);
+const BACKWARD = new Set(['ArrowLeft', 'Backspace', 'PageUp']);
 
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 
@@ -33,35 +36,6 @@ const writeNumber = (key: string, value: number) => {
     // 저장하지 못해도 진행에는 지장이 없다.
   }
 };
-
-function statusOf(frame: Frame, data: ContestData, resume: string | null): { tone: string; text: string } {
-  const team = frame.rows.find((r) => r.team.id === frame.teamId);
-  const label = data.problems.find((p) => p.id === frame.problemId)?.label;
-  switch (frame.kind) {
-    case 'start':
-      return {
-        tone: 'idle',
-        text: `프리즈 시점 순위표 (${formatClock(data.contest.freezeSeconds)} 이후 제출 가림) · ${
-          resume ?? '→ 키로 공개 시작, ? 키로 조작법'
-        }`,
-      };
-    case 'pick':
-      return { tone: 'wait', text: `${team?.team.name} · ${label}번 결과는?` };
-    case 'reveal':
-      if (frame.outcome === 'failed') return { tone: 'no', text: `${team?.team.name} · ${label}번 오답` };
-      return {
-        tone: 'ok',
-        text: `${team?.team.name} · ${label}번 ${frame.outcome === 'solved' ? '정답' : '점수 상승'}${
-          frame.to !== frame.from ? ` · ${(frame.from ?? 0) + 1}위에서 ${(frame.to ?? 0) + 1}위로` : ''
-        }`,
-      };
-    case 'final':
-    case 'award':
-      return { tone: 'idle', text: `${team?.rank}위 확정 · ${team?.team.name}` };
-    case 'end':
-      return { tone: 'idle', text: '최종 순위' };
-  }
-}
 
 export function Resolver({ data }: { data: ContestData }) {
   const frames = useMemo(() => buildTimeline(data), [data]);
@@ -85,43 +59,62 @@ export function Resolver({ data }: { data: ContestData }) {
   useEffect(() => writeNumber('resolver:rows', rowsVisible), [rowsVisible]);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      const actions: Record<string, () => void> = {
-        ArrowRight: () => go(1),
-        ' ': () => go(1),
-        Enter: () => go(1),
-        PageDown: () => go(1),
-        ArrowLeft: () => go(-1),
-        Backspace: () => go(-1),
-        PageUp: () => go(-1),
-        Home: () => setIndex(0),
-        End: () => setIndex(last),
-        a: () => setAuto((v) => !v),
-        f: () => {
+    /** 처리한 키면 true. 결과가 한꺼번에 드러나는 동작은 Shift를 함께 눌러야 하고, 키를 누르고 있어도 반복되지 않는다. */
+    const handle = ({ code, shiftKey, repeat }: KeyboardEvent): boolean => {
+      if (FORWARD.has(code)) {
+        if (!repeat) go(1);
+        return true;
+      }
+      if (BACKWARD.has(code)) {
+        go(-1);
+        return true;
+      }
+      if (repeat) return false;
+      switch (code) {
+        case 'KeyA':
+          setAuto((v) => !v);
+          return true;
+        case 'KeyF':
           if (document.fullscreenElement) void document.exitFullscreen();
           else void document.documentElement.requestFullscreen?.();
-        },
-        r: () => saved && setIndex(clamp(saved, 0, last)),
-        '+': () => setRowsVisible((n) => Math.max(6, n - 1)),
-        '=': () => setRowsVisible((n) => Math.max(6, n - 1)),
-        '-': () => setRowsVisible((n) => Math.min(40, n + 1)),
-        '?': () => setHelp((v) => !v),
-        h: () => setHelp((v) => !v),
-        Escape: () => {
+          return true;
+        case 'KeyR':
+          if (shiftKey && index === 0 && saved) setIndex(clamp(saved, 0, last));
+          return true;
+        case 'Home':
+        case 'End':
+          if (shiftKey) {
+            setAuto(false);
+            setIndex(code === 'Home' ? 0 : last);
+          }
+          return true;
+        case 'Equal':
+        case 'NumpadAdd':
+          setRowsVisible((n) => Math.max(6, n - 1));
+          return true;
+        case 'Minus':
+        case 'NumpadSubtract':
+          setRowsVisible((n) => Math.min(40, n + 1));
+          return true;
+        case 'Slash':
+        case 'KeyH':
+          setHelp((v) => !v);
+          return true;
+        case 'Escape':
           setHelp(false);
           setAuto(false);
-        },
-      };
-      const action = actions[e.key.length === 1 ? e.key.toLowerCase() : e.key];
-      if (!action) return;
-      e.preventDefault();
-      if (e.key === 'Home' || e.key === 'End') setAuto(false);
-      action();
+          return true;
+        default:
+          return false;
+      }
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (handle(e)) e.preventDefault();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [go, last, saved]);
+  }, [go, index, last, saved]);
 
   useEffect(() => {
     if (!auto) return;
@@ -134,27 +127,19 @@ export function Resolver({ data }: { data: ContestData }) {
     return () => window.clearTimeout(timer);
   }, [auto, index, last, frame.kind, go]);
 
-  const resume = saved && saved < last ? `지난번 ${saved}/${last} 단계에서 멈춤. R 키로 이어 보기, → 키로 처음부터` : null;
-  const status = statusOf(frame, data, resume);
-  const pendingLeft = frame.rows.reduce((sum, r) => sum + r.cells.filter((c) => c.pending > 0).length, 0);
   const awardTeam = frame.kind === 'award' ? frame.rows.find((r) => r.team.id === frame.teamId) : undefined;
 
   return (
     <div className="stage" onClick={() => go(1)}>
       <header className="topbar">
         <h1>{data.contest.title}</h1>
-        <p className={`status tone-${status.tone}`} key={index}>
-          {status.text}
-        </p>
-        <div className="progress">
+        <p className="side">
           {auto && <span className="auto">자동 진행</span>}
-          <span>
-            남은 공개 <b>{pendingLeft}</b>
-          </span>
-          <span>
-            확정 <b>{frame.finalized}</b> / {frame.rows.length}
-          </span>
-        </div>
+          {frame.kind === 'start' &&
+            (saved
+              ? `지난번 ${saved}/${last} 단계에서 멈춤 · Shift+R로 이어 보기 · → 키로 처음부터`
+              : '→ 키로 공개 시작 · ? 키로 조작법')}
+        </p>
       </header>
 
       <Board data={data} frame={frame} awards={awards} rowsVisible={rowsVisible} />
@@ -175,10 +160,10 @@ export function Resolver({ data }: { data: ContestData }) {
             <dd>전체 화면</dd>
             <dt>+ −</dt>
             <dd>한 화면에 보이는 줄 수 조절</dd>
-            <dt>Home End</dt>
+            <dt>Shift+Home, Shift+End</dt>
             <dd>처음으로, 최종 순위로</dd>
-            <dt>R</dt>
-            <dd>지난번에 멈춘 곳에서 이어 보기</dd>
+            <dt>Shift+R</dt>
+            <dd>지난번에 멈춘 곳에서 이어 보기 (시작 화면에서만)</dd>
             <dt>? Esc</dt>
             <dd>이 창 열고 닫기</dd>
           </dl>

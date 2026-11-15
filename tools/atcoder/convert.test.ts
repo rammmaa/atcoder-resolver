@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { buildBoard, revealAll } from '../../src/core/scoring';
-import { type AtCoderStandings, compareWithOfficial, convert, type ConvertInput } from './convert';
+import { type AtCoderStandings, compareSubmissionCounts, compareWithOfficial, convert, type ConvertInput } from './convert';
 import type { ContestTop, RawSubmission } from './parse';
 
 const top: ContestTop = {
@@ -199,6 +199,71 @@ describe('convert: 참가자', () => {
   });
 });
 
+describe('convert: 설정이나 자료가 어긋났을 때의 경고', () => {
+  it('exclude에 적은 아이디가 대회에 없으면 알린다', () => {
+    const { warnings } = convert(input({ config: { contestId: 'ycpc2026', freezeMinutesBeforeEnd: 30, exclude: ['bob', 'bbo'] } }));
+    expect(warnings.join('\n')).toMatch(/exclude.*bbo/);
+    expect(warnings.join('\n')).not.toMatch(/exclude.*bob/);
+  });
+
+  it('명단에 같은 아이디가 두 번 나오면 알린다', () => {
+    const { warnings } = convert(
+      input({
+        participants: [
+          { handle: 'alice', name: '김앨리스' },
+          { handle: 'bob', name: '박밥' },
+          { handle: 'Alice', name: '다른 이름' },
+        ],
+      }),
+    );
+    expect(warnings.join('\n')).toMatch(/두 번.*alice/i);
+  });
+
+  it('순위표 JSON의 문제 목록에 없는 문제로 낸 제출이 있으면 알린다', () => {
+    const { warnings } = convert(
+      input({
+        submissions: [raw('alice', 'A', '18:00:00'), raw('alice', 'Z', '18:10:00')],
+        standings: standings([['alice', 1, 100, 0]]),
+      }),
+    );
+    expect(warnings.join('\n')).toMatch(/문제 목록에 없는.*1건/);
+  });
+});
+
+describe('compareSubmissionCounts', () => {
+  const official = (counts: [handle: string, count: number][]): AtCoderStandings => {
+    const result = standings(counts.map(([handle], i) => [handle, i + 1, 0, 0]));
+    result.StandingsData.forEach((row, i) => (row.TotalResult.Count = counts[i][1]));
+    return result;
+  };
+  const collected = () =>
+    convert(
+      input({
+        submissions: [
+          raw('alice', 'A', '18:00:00', 'WA'),
+          raw('alice', 'A', '18:05:00'),
+          raw('bob', 'A', '20:10:00', 'CE'),
+          raw('bob', 'A', '20:15:00'),
+        ],
+      }),
+    ).data;
+
+  it('참가자마다 받은 제출 수가 공식 순위표의 제출 수와 같으면 차이가 없다', () => {
+    expect(compareSubmissionCounts(collected(), official([['alice', 2], ['bob', 2]]))).toEqual({ state: 'match', differing: [] });
+  });
+
+  it('받은 제출이 모자란 참가자를 찾아낸다', () => {
+    expect(compareSubmissionCounts(collected(), official([['alice', 3], ['bob', 2]]))).toEqual({
+      state: 'mismatch',
+      differing: [{ teamId: 'alice', official: 3, collected: 2 }],
+    });
+  });
+
+  it('공식 순위표가 프리즈 전 제출만 세고 있으면 프리즈 상태로 본다', () => {
+    expect(compareSubmissionCounts(collected(), official([['alice', 2], ['bob', 0]]))).toEqual({ state: 'frozen', differing: [] });
+  });
+});
+
 describe('compareWithOfficial', () => {
   const data = () =>
     convert(
@@ -215,13 +280,13 @@ describe('compareWithOfficial', () => {
   const finalRows = () => buildBoard(data(), revealAll(data()));
 
   // alice는 30분에 정답(1800초), bob은 40분에 오답 뒤 50분에 정답(3000초 + 페널티 1200초).
-  it('점수, 오답 수, 시간, 순위가 모두 같으면 차이가 없다', () => {
+  it('점수, 오답 수, 시간, 순위가 모두 같으면 차이가 없고 견준 인원을 알려 준다', () => {
     const official = standings([
       ['staff', 1, 100, 0, 60],
       ['alice', 2, 100, 0, 1800],
       ['bob', 3, 100, 1, 4200],
     ]);
-    expect(compareWithOfficial(finalRows(), official)).toEqual([]);
+    expect(compareWithOfficial(finalRows(), official)).toEqual({ compared: 2, mismatches: [], missing: [] });
   });
 
   it('공식 순위표와 다른 참가자를 찾아낸다', () => {
@@ -229,7 +294,7 @@ describe('compareWithOfficial', () => {
       ['bob', 1, 200, 0, 1000],
       ['alice', 2, 100, 0, 1800],
     ]);
-    expect(compareWithOfficial(finalRows(), official)).toEqual([
+    expect(compareWithOfficial(finalRows(), official).mismatches).toEqual([
       {
         teamId: 'alice',
         official: { rank: 2, score: 100, penalty: 0, time: 1800 },
@@ -248,12 +313,25 @@ describe('compareWithOfficial', () => {
       ['alice', 1, 100, 0, 1800],
       ['bob', 2, 100, 1, 3600],
     ]);
-    expect(compareWithOfficial(finalRows(), official).map((m) => m.teamId)).toEqual(['bob']);
+    expect(compareWithOfficial(finalRows(), official).mismatches.map((m) => m.teamId)).toEqual(['bob']);
   });
 
   it('점수가 없는 참가자는 시간을 비교하지 않는다', () => {
-    const data = convert(input({ submissions: [raw('alice', 'A', '18:00:00', 'WA')] })).data;
+    const zero = convert(input({ submissions: [raw('alice', 'A', '18:00:00', 'WA')] })).data;
     const official = standings([['alice', 1, 0, 0, 999]]);
-    expect(compareWithOfficial(buildBoard(data, revealAll(data)), official)).toEqual([]);
+    expect(compareWithOfficial(buildBoard(zero, revealAll(zero)), official).mismatches).toEqual([]);
+  });
+
+  it('공식 순위표에 없는 참가자는 일치로 치지 않고 따로 알려 준다', () => {
+    const official = standings([['alice', 1, 100, 0, 1800]]);
+    expect(compareWithOfficial(finalRows(), official)).toEqual({ compared: 1, mismatches: [], missing: ['bob'] });
+  });
+
+  it('공식 순위표가 비어 있으면 견준 인원이 0명이다', () => {
+    expect(compareWithOfficial(finalRows(), standings([]))).toEqual({
+      compared: 0,
+      mismatches: [],
+      missing: ['alice', 'bob'],
+    });
   });
 });

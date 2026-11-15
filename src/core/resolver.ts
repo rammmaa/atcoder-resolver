@@ -45,10 +45,13 @@ export function assignAwards(finalRows: Row[], rules: AwardRule[]): Map<string, 
         if (row.rank >= from && row.rank <= to) give(row, rule.name);
       }
     } else if (rule.group) {
-      eligible
-        .filter((r) => r.team.group === rule.group && !(rule.excludeAwarded && awards.has(r.team.id)))
-        .slice(0, rule.count ?? 1)
-        .forEach((row) => give(row, rule.name));
+      const candidates = eligible.filter(
+        (r) => r.team.group === rule.group && !(rule.excludeAwarded && awards.has(r.team.id)),
+      );
+      const count = rule.count ?? 1;
+      // 마지막 자리에서 동점이면 함께 준다. 순위 구간 상과 같은 원칙이다.
+      const cutoff = candidates[count - 1]?.rank;
+      candidates.filter((r, i) => i < count || r.rank === cutoff).forEach((row) => give(row, rule.name));
     }
   }
   return awards;
@@ -63,9 +66,21 @@ export function assignAwards(finalRows: Row[], rules: AwardRule[]): Map<string, 
  * 가려진 제출을 공개해도 순위가 내려가는 일은 없으므로, 한 번 확정된 자리는 끝까지 바뀌지 않는다.
  */
 export function buildTimeline(data: ContestData): Frame[] {
-  const awards = assignAwards(buildBoard(data, revealAll(data)), data.awards ?? []);
+  const finalRows = buildBoard(data, revealAll(data));
+  const finalRank = new Map(finalRows.map((r) => [r.team.id, r.rank]));
+  const awards = assignAwards(finalRows, data.awards ?? []);
   const revealed = new Set<string>();
   let rows = buildBoard(data, revealed);
+
+  /**
+   * 확정된 줄에는 최종 순위를 적는다. 자리는 이미 정해졌어도 순위 숫자는 동점 묶음의 첫 자리로 매기기 때문에,
+   * 위에 있던 동점자가 나중에 올라가면 숫자가 바뀐다. "2위 확정"이라고 띄운 뒤에 3위가 되면 안 된다.
+   */
+  const settle = (current: Row[], finalized: number): Row[] => {
+    const from = current.length - finalized;
+    if (current.every((row, i) => i < from || row.rank === finalRank.get(row.team.id))) return current;
+    return current.map((row, i) => (i < from ? row : { ...row, rank: finalRank.get(row.team.id) ?? row.rank }));
+  };
 
   const frames: Frame[] = [{ kind: 'start', rows, cursor: null, finalized: 0 }];
   let cursor = rows.length - 1;
@@ -76,22 +91,23 @@ export function buildTimeline(data: ContestData): Frame[] {
     const pending = rows[cursor].cells.find((c) => c.pending > 0);
 
     if (!pending) {
-      frames.push({ kind: 'final', rows, cursor, teamId, finalized: finalized + 1 });
+      const settled = settle(rows, finalized + 1);
+      frames.push({ kind: 'final', rows: settled, cursor, teamId, finalized: finalized + 1 });
       const won = awards.get(teamId);
-      if (won) frames.push({ kind: 'award', rows, cursor, teamId, awards: won, finalized: finalized + 1 });
+      if (won) frames.push({ kind: 'award', rows: settled, cursor, teamId, awards: won, finalized: finalized + 1 });
       cursor -= 1;
       continue;
     }
 
     const { problemId } = pending;
-    frames.push({ kind: 'pick', rows, cursor, teamId, problemId, finalized });
+    frames.push({ kind: 'pick', rows: settle(rows, finalized), cursor, teamId, problemId, finalized });
 
     revealed.add(cellKey(teamId, problemId));
     rows = buildBoard(data, revealed);
     const to = rows.findIndex((r) => r.team.id === teamId);
     const after = rows[to].cells.find((c) => c.problemId === problemId);
     const outcome: Outcome = after?.solved ? 'solved' : (after?.score ?? 0) > pending.score ? 'partial' : 'failed';
-    frames.push({ kind: 'reveal', rows, cursor, teamId, problemId, outcome, from: cursor, to, finalized });
+    frames.push({ kind: 'reveal', rows: settle(rows, finalized), cursor, teamId, problemId, outcome, from: cursor, to, finalized });
   }
 
   frames.push({ kind: 'end', rows, cursor: null, finalized: rows.length });

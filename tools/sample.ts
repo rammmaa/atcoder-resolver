@@ -20,14 +20,17 @@ const pick = <T>(items: T[]) => items[Math.floor(rand() * items.length)];
 /** 평균 1 근처에서 가끔 크게 튀는 배수. 풀이 시간이 사람마다 들쭉날쭉한 것을 흉내 낸다. */
 const jitter = () => Math.exp((rand() + rand() + rand() - 1.5) * 0.9);
 
-const SURNAMES = ['김', '이', '박', '최', '정', '강', '조', '윤', '장', '임', '한', '오', '서', '신', '권'];
+const SURNAMES = [
+  'Kim', 'Lee', 'Park', 'Garcia', 'Smith', 'Tanaka', 'Nguyen', 'Müller', 'Rossi', 'Silva', 'Novak', 'Ivanov', 'Chen',
+  'Singh', 'Okafor',
+];
 const GIVEN = [
-  '하늘', '도윤', '서연', '지호', '수아', '예준', '시우', '하린', '유찬', '채원', '민재', '소율', '건우', '다온', '은호',
-  '나윤', '태오', '서진', '아린', '준서', '윤슬', '로운', '지안', '해솔', '가온', '세아', '이든', '보민', '선우', '라온',
+  'Alex', 'Sam', 'Mina', 'Leo', 'Yuna', 'Omar', 'Ava', 'Noah', 'Iris', 'Kai', 'Lena', 'Hugo', 'Zoe', 'Ravi', 'Emma',
+  'Jun', 'Nora', 'Theo', 'Sara', 'Ivan', 'Maya', 'Eli', 'Lucia', 'Finn', 'Aiko', 'Dani', 'Owen', 'Hana', 'Milo', 'Rosa',
 ];
 const DEPARTMENTS = [
-  '컴퓨터과학과', '인공지능학과', '첨단컴퓨팅학부', '전기전자공학부', '수학과', '물리학과', '산업공학과', '응용통계학과',
-  '기계공학부', '도시공학과', '문헌정보학과', '경제학부',
+  'Computer Science', 'Artificial Intelligence', 'Software', 'Electrical Engineering', 'Mathematics', 'Physics',
+  'Industrial Engineering', 'Statistics', 'Mechanical Engineering', 'Urban Planning', 'Information Science', 'Economics',
 ];
 const SYLLABLES = ['ka', 'ri', 'no', 'su', 'me', 'to', 'ha', 'yu', 'ze', 'lo', 'mi', 'ra', 'be', 'chi', 'do', 'ne'];
 
@@ -35,13 +38,14 @@ const teams: Team[] = [];
 const usedNames = new Set<string>();
 const usedHandles = new Set<string>();
 while (teams.length < 40) {
-  const name = pick(SURNAMES) + pick(GIVEN);
+  const surname = pick(SURNAMES);
+  const name = `${pick(GIVEN)} ${surname}`;
   const handle = `${pick(SYLLABLES)}${pick(SYLLABLES)}${pick(SYLLABLES)}${Math.floor(rand() * 90 + 10)}`;
   if (usedNames.has(name) || usedHandles.has(handle)) continue;
   usedNames.add(name);
   usedHandles.add(handle);
   const team: Team = { id: handle, name, affiliation: pick(DEPARTMENTS) };
-  if (rand() < 0.3) team.group = '새내기';
+  if (rand() < 0.3) team.group = 'rookie';
   teams.push(team);
 }
 
@@ -97,22 +101,23 @@ for (const team of teams) {
 const data: ContestData = {
   contest: {
     id: 'sample',
-    title: '모의 대회 (샘플 데이터)',
+    title: 'Sample Contest',
     startTime: '2026-11-27T17:30:00+09:00',
     durationSeconds: DURATION,
     freezeSeconds: FREEZE,
-    rule: 'sum',
-    penaltySeconds: 20 * 60,
+    // AtCoder 기본 방식: 마지막 정답 시각 + 오답당 5분.
+    rule: 'last',
+    penaltySeconds: 5 * 60,
   },
   problems,
   teams,
   submissions: submissions.sort((a, b) => a.time - b.time || a.id - b.id),
   awards: [
-    { name: '1등상', rank: [1, 1] },
-    { name: '2등상', rank: [2, 3] },
-    { name: '3등상', rank: [4, 6] },
-    { name: '4등상', rank: [7, 10] },
-    { name: '새내기 특별상', group: '새내기', count: 2, excludeAwarded: true },
+    { name: '1st Prize', rank: [1, 1] },
+    { name: '2nd Prize', rank: [2, 3] },
+    { name: '3rd Prize', rank: [4, 6] },
+    { name: 'Honorable Mention', rank: [7, 10] },
+    { name: 'Rookie Award', group: 'rookie', count: 2, excludeAwarded: true },
   ],
 };
 
