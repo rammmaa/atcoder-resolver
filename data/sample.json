@@ -1,0 +1,3463 @@
+{
+ "contest": {
+  "id": "sample",
+  "title": "모의 대회 (샘플 데이터)",
+  "startTime": "2026-11-27T17:30:00+09:00",
+  "durationSeconds": 10800,
+  "freezeSeconds": 9000,
+  "rule": "sum",
+  "penaltySeconds": 1200
+ },
+ "problems": [
+  {
+   "id": "sample_a",
+   "label": "A"
+  },
+  {
+   "id": "sample_b",
+   "label": "B"
+  },
+  {
+   "id": "sample_c",
+   "label": "C"
+  },
+  {
+   "id": "sample_d",
+   "label": "D"
+  },
+  {
+   "id": "sample_e",
+   "label": "E"
+  },
+  {
+   "id": "sample_f",
+   "label": "F"
+  },
+  {
+   "id": "sample_g",
+   "label": "G"
+  },
+  {
+   "id": "sample_h",
+   "label": "H"
+  },
+  {
+   "id": "sample_i",
+   "label": "I"
+  },
+  {
+   "id": "sample_j",
+   "label": "J"
+  },
+  {
+   "id": "sample_k",
+   "label": "K"
+  },
+  {
+   "id": "sample_l",
+   "label": "L"
+  }
+ ],
+ "teams": [
+  {
+   "id": "zechika65",
+   "name": "최준서",
+   "affiliation": "컴퓨터과학과"
+  },
+  {
+   "id": "loyuze72",
+   "name": "장가온",
+   "affiliation": "경제학부"
+  },
+  {
+   "id": "losume81",
+   "name": "정소율",
+   "affiliation": "컴퓨터과학과"
+  },
+  {
+   "id": "hamira64",
+   "name": "윤하늘",
+   "affiliation": "기계공학부"
+  },
+  {
+   "id": "lotoka51",
+   "name": "최가온",
+   "affiliation": "산업공학과",
+   "group": "새내기"
+  },
+  {
+   "id": "chikayu24",
+   "name": "박준서",
+   "affiliation": "기계공학부"
+  },
+  {
+   "id": "dolori61",
+   "name": "윤선우",
+   "affiliation": "첨단컴퓨팅학부",
+   "group": "새내기"
+  },
+  {
+   "id": "meribe17",
+   "name": "정지안",
+   "affiliation": "인공지능학과",
+   "group": "새내기"
+  },
+  {
+   "id": "surato83",
+   "name": "오보민",
+   "affiliation": "물리학과"
+  },
+  {
+   "id": "zenobe74",
+   "name": "한선우",
+   "affiliation": "경제학부",
+   "group": "새내기"
+  },
+  {
+   "id": "donelo44",
+   "name": "신가온",
+   "affiliation": "첨단컴퓨팅학부"
+  },
+  {
+   "id": "mirimi83",
+   "name": "장채원",
+   "affiliation": "컴퓨터과학과"
+  },
+  {
+   "id": "nehane85",
+   "name": "김나윤",
+   "affiliation": "첨단컴퓨팅학부",
+   "group": "새내기"
+  },
+  {
+   "id": "menedo48",
+   "name": "최보민",
+   "affiliation": "인공지능학과"
+  },
+  {
+   "id": "mezera87",
+   "name": "장건우",
+   "affiliation": "도시공학과"
+  },
+  {
+   "id": "hadone65",
+   "name": "조라온",
+   "affiliation": "첨단컴퓨팅학부"
+  },
+  {
+   "id": "sunoto20",
+   "name": "정민재",
+   "affiliation": "인공지능학과"
+  },
+  {
+   "id": "rasuka39",
+   "name": "최건우",
+   "affiliation": "인공지능학과"
+  },
+  {
+   "id": "menemi16",
+   "name": "강민재",
+   "affiliation": "수학과",
+   "group": "새내기"
+  },
+  {
+   "id": "zelori30",
+   "name": "강지안",
+   "affiliation": "컴퓨터과학과",
+   "group": "새내기"
+  },
+  {
+   "id": "midoka76",
+   "name": "임건우",
+   "affiliation": "물리학과"
+  },
+  {
+   "id": "chimino47",
+   "name": "오라온",
+   "affiliation": "첨단컴퓨팅학부"
+  },
+  {
+   "id": "chimeka60",
+   "name": "강건우",
+   "affiliation": "수학과"
+  },
+  {
+   "id": "suneri43",
+   "name": "정유찬",
+   "affiliation": "전기전자공학부",
+   "group": "새내기"
+  },
+  {
+   "id": "nenodo27",
+   "name": "강가온",
+   "affiliation": "전기전자공학부"
+  },
+  {
+   "id": "yubene66",
+   "name": "정보민",
+   "affiliation": "컴퓨터과학과"
+  },
+  {
+   "id": "loraha39",
+   "name": "조아린",
+   "affiliation": "첨단컴퓨팅학부"
+  },
+  {
+   "id": "chibedo73",
+   "name": "신선우",
+   "affiliation": "문헌정보학과"
+  },
+  {
+   "id": "nenochi97",
+   "name": "임가온",
+   "affiliation": "인공지능학과"
+  },
+  {
+   "id": "losube95",
+   "name": "장보민",
+   "affiliation": "경제학부"
+  },
+  {
+   "id": "mechira58",
+   "name": "김수아",
+   "affiliation": "인공지능학과"
+  },
+  {
+   "id": "kahame25",
+   "name": "윤라온",
+   "affiliation": "경제학부"
+  },
+  {
+   "id": "tohano47",
+   "name": "강준서",
+   "affiliation": "기계공학부"
+  },
+  {
+   "id": "nezesu88",
+   "name": "정지호",
+   "affiliation": "문헌정보학과"
+  },
+  {
+   "id": "chimize57",
+   "name": "서나윤",
+   "affiliation": "인공지능학과"
+  },
+  {
+   "id": "hadoyu39",
+   "name": "서선우",
+   "affiliation": "전기전자공학부"
+  },
+  {
+   "id": "rimiyu35",
+   "name": "권준서",
+   "affiliation": "물리학과"
+  },
+  {
+   "id": "suchisu39",
+   "name": "김선우",
+   "affiliation": "전기전자공학부"
+  },
+  {
+   "id": "neloka24",
+   "name": "신지안",
+   "affiliation": "경제학부",
+   "group": "새내기"
+  },
+  {
+   "id": "lobeka12",
+   "name": "윤이든",
+   "affiliation": "첨단컴퓨팅학부",
+   "group": "새내기"
+  }
+ ],
+ "submissions": [
+  {
+   "id": 1223,
+   "teamId": "chimino47",
+   "problemId": "sample_a",
+   "time": 314,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1192,
+   "teamId": "zelori30",
+   "problemId": "sample_a",
+   "time": 336,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1322,
+   "teamId": "kahame25",
+   "problemId": "sample_a",
+   "time": 365,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1306,
+   "teamId": "mechira58",
+   "problemId": "sample_b",
+   "time": 387,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1258,
+   "teamId": "yubene66",
+   "problemId": "sample_a",
+   "time": 397,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1019,
+   "teamId": "losume81",
+   "problemId": "sample_a",
+   "time": 497,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1055,
+   "teamId": "chikayu24",
+   "problemId": "sample_a",
+   "time": 540,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1137,
+   "teamId": "mezera87",
+   "problemId": "sample_a",
+   "time": 544,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1105,
+   "teamId": "zenobe74",
+   "problemId": "sample_b",
+   "time": 558,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1035,
+   "teamId": "hamira64",
+   "problemId": "sample_a",
+   "time": 574,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1246,
+   "teamId": "suneri43",
+   "problemId": "sample_b",
+   "time": 589,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1161,
+   "teamId": "rasuka39",
+   "problemId": "sample_a",
+   "time": 606,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1330,
+   "teamId": "tohano47",
+   "problemId": "sample_a",
+   "time": 669,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1307,
+   "teamId": "mechira58",
+   "problemId": "sample_b",
+   "time": 681,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1138,
+   "teamId": "mezera87",
+   "problemId": "sample_a",
+   "time": 682,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1323,
+   "teamId": "kahame25",
+   "problemId": "sample_a",
+   "time": 684,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1056,
+   "teamId": "chikayu24",
+   "problemId": "sample_a",
+   "time": 685,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1284,
+   "teamId": "chibedo73",
+   "problemId": "sample_a",
+   "time": 703,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1020,
+   "teamId": "losume81",
+   "problemId": "sample_a",
+   "time": 709,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1193,
+   "teamId": "zelori30",
+   "problemId": "sample_a",
+   "time": 722,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1180,
+   "teamId": "menemi16",
+   "problemId": "sample_a",
+   "time": 726,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1000,
+   "teamId": "zechika65",
+   "problemId": "sample_a",
+   "time": 730,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1341,
+   "teamId": "chimize57",
+   "problemId": "sample_a",
+   "time": 739,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1331,
+   "teamId": "tohano47",
+   "problemId": "sample_a",
+   "time": 741,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1063,
+   "teamId": "dolori61",
+   "problemId": "sample_a",
+   "time": 817,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1259,
+   "teamId": "yubene66",
+   "problemId": "sample_a",
+   "time": 822,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1145,
+   "teamId": "hadone65",
+   "problemId": "sample_b",
+   "time": 841,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1355,
+   "teamId": "hadoyu39",
+   "problemId": "sample_b",
+   "time": 854,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1021,
+   "teamId": "losume81",
+   "problemId": "sample_a",
+   "time": 869,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1011,
+   "teamId": "loyuze72",
+   "problemId": "sample_b",
+   "time": 899,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1224,
+   "teamId": "chimino47",
+   "problemId": "sample_b",
+   "time": 914,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1120,
+   "teamId": "mirimi83",
+   "problemId": "sample_a",
+   "time": 915,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1064,
+   "teamId": "dolori61",
+   "problemId": "sample_a",
+   "time": 949,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1303,
+   "teamId": "losube95",
+   "problemId": "sample_a",
+   "time": 950,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1260,
+   "teamId": "yubene66",
+   "problemId": "sample_a",
+   "time": 951,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1308,
+   "teamId": "mechira58",
+   "problemId": "sample_a",
+   "time": 964,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1247,
+   "teamId": "suneri43",
+   "problemId": "sample_a",
+   "time": 989,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1130,
+   "teamId": "menedo48",
+   "problemId": "sample_a",
+   "time": 1000,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1181,
+   "teamId": "menemi16",
+   "problemId": "sample_b",
+   "time": 1004,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1082,
+   "teamId": "meribe17",
+   "problemId": "sample_b",
+   "time": 1010,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1106,
+   "teamId": "zenobe74",
+   "problemId": "sample_a",
+   "time": 1011,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1374,
+   "teamId": "suchisu39",
+   "problemId": "sample_a",
+   "time": 1012,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1012,
+   "teamId": "loyuze72",
+   "problemId": "sample_b",
+   "time": 1034,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1153,
+   "teamId": "sunoto20",
+   "problemId": "sample_b",
+   "time": 1046,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1036,
+   "teamId": "hamira64",
+   "problemId": "sample_b",
+   "time": 1073,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1369,
+   "teamId": "rimiyu35",
+   "problemId": "sample_b",
+   "time": 1104,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1225,
+   "teamId": "chimino47",
+   "problemId": "sample_b",
+   "time": 1109,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1212,
+   "teamId": "midoka76",
+   "problemId": "sample_a",
+   "time": 1110,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1241,
+   "teamId": "chimeka60",
+   "problemId": "sample_b",
+   "time": 1183,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1107,
+   "teamId": "zenobe74",
+   "problemId": "sample_a",
+   "time": 1196,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1162,
+   "teamId": "rasuka39",
+   "problemId": "sample_b",
+   "time": 1209,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1356,
+   "teamId": "hadoyu39",
+   "problemId": "sample_b",
+   "time": 1217,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1309,
+   "teamId": "mechira58",
+   "problemId": "sample_c",
+   "time": 1222,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1182,
+   "teamId": "menemi16",
+   "problemId": "sample_b",
+   "time": 1227,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1163,
+   "teamId": "rasuka39",
+   "problemId": "sample_c",
+   "time": 1238,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1285,
+   "teamId": "chibedo73",
+   "problemId": "sample_c",
+   "time": 1278,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1332,
+   "teamId": "tohano47",
+   "problemId": "sample_a",
+   "time": 1304,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1108,
+   "teamId": "zenobe74",
+   "problemId": "sample_c",
+   "time": 1305,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1013,
+   "teamId": "loyuze72",
+   "problemId": "sample_b",
+   "time": 1323,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1227,
+   "teamId": "chimino47",
+   "problemId": "sample_c",
+   "time": 1323,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1083,
+   "teamId": "meribe17",
+   "problemId": "sample_b",
+   "time": 1333,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1154,
+   "teamId": "sunoto20",
+   "problemId": "sample_b",
+   "time": 1334,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1098,
+   "teamId": "surato83",
+   "problemId": "sample_a",
+   "time": 1339,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1121,
+   "teamId": "mirimi83",
+   "problemId": "sample_b",
+   "time": 1356,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1146,
+   "teamId": "hadone65",
+   "problemId": "sample_b",
+   "time": 1369,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1242,
+   "teamId": "chimeka60",
+   "problemId": "sample_a",
+   "time": 1394,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1388,
+   "teamId": "lobeka12",
+   "problemId": "sample_a",
+   "time": 1431,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1002,
+   "teamId": "zechika65",
+   "problemId": "sample_b",
+   "time": 1434,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1293,
+   "teamId": "nenochi97",
+   "problemId": "sample_b",
+   "time": 1440,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1099,
+   "teamId": "surato83",
+   "problemId": "sample_a",
+   "time": 1470,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1155,
+   "teamId": "sunoto20",
+   "problemId": "sample_c",
+   "time": 1485,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1256,
+   "teamId": "nenodo27",
+   "problemId": "sample_a",
+   "time": 1521,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1226,
+   "teamId": "chimino47",
+   "problemId": "sample_c",
+   "time": 1549,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1001,
+   "teamId": "zechika65",
+   "problemId": "sample_b",
+   "time": 1554,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1139,
+   "teamId": "mezera87",
+   "problemId": "sample_b",
+   "time": 1555,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1248,
+   "teamId": "suneri43",
+   "problemId": "sample_c",
+   "time": 1608,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1379,
+   "teamId": "neloka24",
+   "problemId": "sample_b",
+   "time": 1614,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1194,
+   "teamId": "zelori30",
+   "problemId": "sample_b",
+   "time": 1683,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1389,
+   "teamId": "lobeka12",
+   "problemId": "sample_a",
+   "time": 1690,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1037,
+   "teamId": "hamira64",
+   "problemId": "sample_d",
+   "time": 1736,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1274,
+   "teamId": "loraha39",
+   "problemId": "sample_a",
+   "time": 1737,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1014,
+   "teamId": "loyuze72",
+   "problemId": "sample_b",
+   "time": 1751,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1122,
+   "teamId": "mirimi83",
+   "problemId": "sample_b",
+   "time": 1769,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1342,
+   "teamId": "chimize57",
+   "problemId": "sample_b",
+   "time": 1826,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1286,
+   "teamId": "chibedo73",
+   "problemId": "sample_c",
+   "time": 1835,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1003,
+   "teamId": "zechika65",
+   "problemId": "sample_b",
+   "time": 1847,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1100,
+   "teamId": "surato83",
+   "problemId": "sample_b",
+   "time": 1848,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1023,
+   "teamId": "losume81",
+   "problemId": "sample_b",
+   "time": 1864,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1275,
+   "teamId": "loraha39",
+   "problemId": "sample_a",
+   "time": 1881,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1164,
+   "teamId": "rasuka39",
+   "problemId": "sample_c",
+   "time": 1887,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1022,
+   "teamId": "losume81",
+   "problemId": "sample_b",
+   "time": 1889,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1109,
+   "teamId": "zenobe74",
+   "problemId": "sample_c",
+   "time": 1890,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1213,
+   "teamId": "midoka76",
+   "problemId": "sample_a",
+   "time": 1890,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1324,
+   "teamId": "kahame25",
+   "problemId": "sample_b",
+   "time": 1897,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1183,
+   "teamId": "menemi16",
+   "problemId": "sample_c",
+   "time": 1904,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1065,
+   "teamId": "dolori61",
+   "problemId": "sample_b",
+   "time": 1934,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1357,
+   "teamId": "hadoyu39",
+   "problemId": "sample_c",
+   "time": 1938,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1243,
+   "teamId": "chimeka60",
+   "problemId": "sample_a",
+   "time": 1947,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1310,
+   "teamId": "mechira58",
+   "problemId": "sample_d",
+   "time": 1965,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1156,
+   "teamId": "sunoto20",
+   "problemId": "sample_c",
+   "time": 2000,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1101,
+   "teamId": "surato83",
+   "problemId": "sample_b",
+   "time": 2009,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1165,
+   "teamId": "rasuka39",
+   "problemId": "sample_c",
+   "time": 2009,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1147,
+   "teamId": "hadone65",
+   "problemId": "sample_a",
+   "time": 2010,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1287,
+   "teamId": "chibedo73",
+   "problemId": "sample_c",
+   "time": 2049,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1184,
+   "teamId": "menemi16",
+   "problemId": "sample_c",
+   "time": 2059,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1102,
+   "teamId": "surato83",
+   "problemId": "sample_b",
+   "time": 2060,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1214,
+   "teamId": "midoka76",
+   "problemId": "sample_a",
+   "time": 2078,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1195,
+   "teamId": "zelori30",
+   "problemId": "sample_c",
+   "time": 2098,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1261,
+   "teamId": "yubene66",
+   "problemId": "sample_b",
+   "time": 2113,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1358,
+   "teamId": "hadoyu39",
+   "problemId": "sample_a",
+   "time": 2117,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1186,
+   "teamId": "menemi16",
+   "problemId": "sample_d",
+   "time": 2153,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1343,
+   "teamId": "chimize57",
+   "problemId": "sample_b",
+   "time": 2165,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1057,
+   "teamId": "chikayu24",
+   "problemId": "sample_b",
+   "time": 2180,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1196,
+   "teamId": "zelori30",
+   "problemId": "sample_c",
+   "time": 2190,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1084,
+   "teamId": "meribe17",
+   "problemId": "sample_c",
+   "time": 2231,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1198,
+   "teamId": "zelori30",
+   "problemId": "sample_c",
+   "time": 2232,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1038,
+   "teamId": "hamira64",
+   "problemId": "sample_c",
+   "time": 2233,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1370,
+   "teamId": "rimiyu35",
+   "problemId": "sample_a",
+   "time": 2261,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1024,
+   "teamId": "losume81",
+   "problemId": "sample_b",
+   "time": 2263,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1228,
+   "teamId": "chimino47",
+   "problemId": "sample_c",
+   "time": 2270,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1067,
+   "teamId": "dolori61",
+   "problemId": "sample_c",
+   "time": 2295,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1167,
+   "teamId": "rasuka39",
+   "problemId": "sample_d",
+   "time": 2302,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1185,
+   "teamId": "menemi16",
+   "problemId": "sample_d",
+   "time": 2347,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1039,
+   "teamId": "hamira64",
+   "problemId": "sample_c",
+   "time": 2357,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1066,
+   "teamId": "dolori61",
+   "problemId": "sample_c",
+   "time": 2370,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1197,
+   "teamId": "zelori30",
+   "problemId": "sample_c",
+   "time": 2395,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1288,
+   "teamId": "chibedo73",
+   "problemId": "sample_b",
+   "time": 2410,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1166,
+   "teamId": "rasuka39",
+   "problemId": "sample_d",
+   "time": 2411,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1336,
+   "teamId": "nezesu88",
+   "problemId": "sample_b",
+   "time": 2411,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1229,
+   "teamId": "chimino47",
+   "problemId": "sample_c",
+   "time": 2452,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1344,
+   "teamId": "chimize57",
+   "problemId": "sample_b",
+   "time": 2464,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1157,
+   "teamId": "sunoto20",
+   "problemId": "sample_c",
+   "time": 2467,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1380,
+   "teamId": "neloka24",
+   "problemId": "sample_a",
+   "time": 2522,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1015,
+   "teamId": "loyuze72",
+   "problemId": "sample_a",
+   "time": 2595,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1311,
+   "teamId": "mechira58",
+   "problemId": "sample_d",
+   "time": 2598,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1025,
+   "teamId": "losume81",
+   "problemId": "sample_b",
+   "time": 2619,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1187,
+   "teamId": "menemi16",
+   "problemId": "sample_d",
+   "time": 2653,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1148,
+   "teamId": "hadone65",
+   "problemId": "sample_c",
+   "time": 2664,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1068,
+   "teamId": "dolori61",
+   "problemId": "sample_c",
+   "time": 2748,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1312,
+   "teamId": "mechira58",
+   "problemId": "sample_d",
+   "time": 2752,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1199,
+   "teamId": "zelori30",
+   "problemId": "sample_c",
+   "time": 2761,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1345,
+   "teamId": "chimize57",
+   "problemId": "sample_b",
+   "time": 2788,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1188,
+   "teamId": "menemi16",
+   "problemId": "sample_d",
+   "time": 2834,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1103,
+   "teamId": "surato83",
+   "problemId": "sample_b",
+   "time": 2837,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1337,
+   "teamId": "nezesu88",
+   "problemId": "sample_a",
+   "time": 2861,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1168,
+   "teamId": "rasuka39",
+   "problemId": "sample_d",
+   "time": 2872,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1304,
+   "teamId": "losube95",
+   "problemId": "sample_b",
+   "time": 2877,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1004,
+   "teamId": "zechika65",
+   "problemId": "sample_c",
+   "time": 2889,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1390,
+   "teamId": "lobeka12",
+   "problemId": "sample_b",
+   "time": 2908,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1140,
+   "teamId": "mezera87",
+   "problemId": "sample_d",
+   "time": 2934,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1249,
+   "teamId": "suneri43",
+   "problemId": "sample_d",
+   "time": 2953,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1127,
+   "teamId": "nehane85",
+   "problemId": "sample_b",
+   "time": 2969,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1016,
+   "teamId": "loyuze72",
+   "problemId": "sample_a",
+   "time": 2972,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1346,
+   "teamId": "chimize57",
+   "problemId": "sample_c",
+   "time": 2988,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1104,
+   "teamId": "surato83",
+   "problemId": "sample_b",
+   "time": 3003,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1026,
+   "teamId": "losume81",
+   "problemId": "sample_c",
+   "time": 3027,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1050,
+   "teamId": "lotoka51",
+   "problemId": "sample_b",
+   "time": 3062,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1059,
+   "teamId": "chikayu24",
+   "problemId": "sample_b",
+   "time": 3083,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1005,
+   "teamId": "zechika65",
+   "problemId": "sample_c",
+   "time": 3109,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1201,
+   "teamId": "zelori30",
+   "problemId": "sample_d",
+   "time": 3162,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1058,
+   "teamId": "chikayu24",
+   "problemId": "sample_b",
+   "time": 3192,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1069,
+   "teamId": "dolori61",
+   "problemId": "sample_d",
+   "time": 3203,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1276,
+   "teamId": "loraha39",
+   "problemId": "sample_c",
+   "time": 3265,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1158,
+   "teamId": "sunoto20",
+   "problemId": "sample_d",
+   "time": 3280,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1150,
+   "teamId": "hadone65",
+   "problemId": "sample_c",
+   "time": 3292,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1123,
+   "teamId": "mirimi83",
+   "problemId": "sample_c",
+   "time": 3306,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1115,
+   "teamId": "donelo44",
+   "problemId": "sample_a",
+   "time": 3311,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1149,
+   "teamId": "hadone65",
+   "problemId": "sample_c",
+   "time": 3318,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1027,
+   "teamId": "losume81",
+   "problemId": "sample_c",
+   "time": 3365,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1347,
+   "teamId": "chimize57",
+   "problemId": "sample_c",
+   "time": 3366,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1391,
+   "teamId": "lobeka12",
+   "problemId": "sample_b",
+   "time": 3371,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1313,
+   "teamId": "mechira58",
+   "problemId": "sample_e",
+   "time": 3383,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1289,
+   "teamId": "chibedo73",
+   "problemId": "sample_d",
+   "time": 3414,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1325,
+   "teamId": "kahame25",
+   "problemId": "sample_d",
+   "time": 3461,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1110,
+   "teamId": "zenobe74",
+   "problemId": "sample_d",
+   "time": 3524,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1294,
+   "teamId": "nenochi97",
+   "problemId": "sample_c",
+   "time": 3530,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1141,
+   "teamId": "mezera87",
+   "problemId": "sample_c",
+   "time": 3561,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1060,
+   "teamId": "chikayu24",
+   "problemId": "sample_b",
+   "time": 3564,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1051,
+   "teamId": "lotoka51",
+   "problemId": "sample_b",
+   "time": 3581,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1085,
+   "teamId": "meribe17",
+   "problemId": "sample_e",
+   "time": 3587,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1392,
+   "teamId": "lobeka12",
+   "problemId": "sample_b",
+   "time": 3646,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1215,
+   "teamId": "midoka76",
+   "problemId": "sample_b",
+   "time": 3662,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1200,
+   "teamId": "zelori30",
+   "problemId": "sample_d",
+   "time": 3718,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1116,
+   "teamId": "donelo44",
+   "problemId": "sample_a",
+   "time": 3737,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1124,
+   "teamId": "mirimi83",
+   "problemId": "sample_c",
+   "time": 3749,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1333,
+   "teamId": "tohano47",
+   "problemId": "sample_b",
+   "time": 3754,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1262,
+   "teamId": "yubene66",
+   "problemId": "sample_c",
+   "time": 3810,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1348,
+   "teamId": "chimize57",
+   "problemId": "sample_c",
+   "time": 3846,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1086,
+   "teamId": "meribe17",
+   "problemId": "sample_e",
+   "time": 3865,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1359,
+   "teamId": "hadoyu39",
+   "problemId": "sample_d",
+   "time": 3872,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1070,
+   "teamId": "dolori61",
+   "problemId": "sample_d",
+   "time": 3935,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1314,
+   "teamId": "mechira58",
+   "problemId": "sample_e",
+   "time": 3954,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1375,
+   "teamId": "suchisu39",
+   "problemId": "sample_b",
+   "time": 3979,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1040,
+   "teamId": "hamira64",
+   "problemId": "sample_f",
+   "time": 3984,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1088,
+   "teamId": "meribe17",
+   "problemId": "sample_d",
+   "time": 4010,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1087,
+   "teamId": "meribe17",
+   "problemId": "sample_d",
+   "time": 4028,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1360,
+   "teamId": "hadoyu39",
+   "problemId": "sample_e",
+   "time": 4144,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1028,
+   "teamId": "losume81",
+   "problemId": "sample_d",
+   "time": 4175,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1131,
+   "teamId": "menedo48",
+   "problemId": "sample_e",
+   "time": 4181,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1230,
+   "teamId": "chimino47",
+   "problemId": "sample_e",
+   "time": 4187,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1041,
+   "teamId": "hamira64",
+   "problemId": "sample_f",
+   "time": 4234,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1349,
+   "teamId": "chimize57",
+   "problemId": "sample_c",
+   "time": 4263,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1334,
+   "teamId": "tohano47",
+   "problemId": "sample_b",
+   "time": 4268,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1169,
+   "teamId": "rasuka39",
+   "problemId": "sample_e",
+   "time": 4326,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1071,
+   "teamId": "dolori61",
+   "problemId": "sample_d",
+   "time": 4328,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1277,
+   "teamId": "loraha39",
+   "problemId": "sample_b",
+   "time": 4391,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1089,
+   "teamId": "meribe17",
+   "problemId": "sample_d",
+   "time": 4405,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1203,
+   "teamId": "zelori30",
+   "problemId": "sample_d",
+   "time": 4410,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1376,
+   "teamId": "suchisu39",
+   "problemId": "sample_b",
+   "time": 4428,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1159,
+   "teamId": "sunoto20",
+   "problemId": "sample_f",
+   "time": 4485,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1029,
+   "teamId": "losume81",
+   "problemId": "sample_d",
+   "time": 4535,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1204,
+   "teamId": "zelori30",
+   "problemId": "sample_d",
+   "time": 4655,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1295,
+   "teamId": "nenochi97",
+   "problemId": "sample_d",
+   "time": 4666,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1371,
+   "teamId": "rimiyu35",
+   "problemId": "sample_c",
+   "time": 4671,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1189,
+   "teamId": "menemi16",
+   "problemId": "sample_f",
+   "time": 4684,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1202,
+   "teamId": "zelori30",
+   "problemId": "sample_d",
+   "time": 4752,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1042,
+   "teamId": "hamira64",
+   "problemId": "sample_g",
+   "time": 4803,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1381,
+   "teamId": "neloka24",
+   "problemId": "sample_c",
+   "time": 4872,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1030,
+   "teamId": "losume81",
+   "problemId": "sample_e",
+   "time": 4880,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1250,
+   "teamId": "suneri43",
+   "problemId": "sample_e",
+   "time": 4880,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1361,
+   "teamId": "hadoyu39",
+   "problemId": "sample_e",
+   "time": 4891,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1170,
+   "teamId": "rasuka39",
+   "problemId": "sample_e",
+   "time": 4913,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1111,
+   "teamId": "zenobe74",
+   "problemId": "sample_e",
+   "time": 4931,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1132,
+   "teamId": "menedo48",
+   "problemId": "sample_c",
+   "time": 4967,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1362,
+   "teamId": "hadoyu39",
+   "problemId": "sample_e",
+   "time": 4996,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1128,
+   "teamId": "nehane85",
+   "problemId": "sample_a",
+   "time": 5008,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1072,
+   "teamId": "dolori61",
+   "problemId": "sample_f",
+   "time": 5064,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1263,
+   "teamId": "yubene66",
+   "problemId": "sample_f",
+   "time": 5069,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1251,
+   "teamId": "suneri43",
+   "problemId": "sample_f",
+   "time": 5173,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1129,
+   "teamId": "nehane85",
+   "problemId": "sample_a",
+   "time": 5174,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1031,
+   "teamId": "losume81",
+   "problemId": "sample_e",
+   "time": 5176,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1205,
+   "teamId": "zelori30",
+   "problemId": "sample_d",
+   "time": 5216,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1006,
+   "teamId": "zechika65",
+   "problemId": "sample_f",
+   "time": 5250,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1264,
+   "teamId": "yubene66",
+   "problemId": "sample_f",
+   "time": 5253,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1363,
+   "teamId": "hadoyu39",
+   "problemId": "sample_e",
+   "time": 5279,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1133,
+   "teamId": "menedo48",
+   "problemId": "sample_c",
+   "time": 5304,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1265,
+   "teamId": "yubene66",
+   "problemId": "sample_f",
+   "time": 5311,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1364,
+   "teamId": "hadoyu39",
+   "problemId": "sample_f",
+   "time": 5347,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1160,
+   "teamId": "sunoto20",
+   "problemId": "sample_e",
+   "time": 5375,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1382,
+   "teamId": "neloka24",
+   "problemId": "sample_c",
+   "time": 5377,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1217,
+   "teamId": "midoka76",
+   "problemId": "sample_b",
+   "time": 5380,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1052,
+   "teamId": "lotoka51",
+   "problemId": "sample_a",
+   "time": 5386,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1216,
+   "teamId": "midoka76",
+   "problemId": "sample_b",
+   "time": 5394,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1074,
+   "teamId": "dolori61",
+   "problemId": "sample_f",
+   "time": 5410,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1218,
+   "teamId": "midoka76",
+   "problemId": "sample_b",
+   "time": 5442,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1372,
+   "teamId": "rimiyu35",
+   "problemId": "sample_c",
+   "time": 5494,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1007,
+   "teamId": "zechika65",
+   "problemId": "sample_f",
+   "time": 5499,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1112,
+   "teamId": "zenobe74",
+   "problemId": "sample_e",
+   "time": 5505,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1296,
+   "teamId": "nenochi97",
+   "problemId": "sample_d",
+   "time": 5539,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1032,
+   "teamId": "losume81",
+   "problemId": "sample_e",
+   "time": 5569,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1252,
+   "teamId": "suneri43",
+   "problemId": "sample_f",
+   "time": 5582,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1219,
+   "teamId": "midoka76",
+   "problemId": "sample_b",
+   "time": 5674,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1373,
+   "teamId": "rimiyu35",
+   "problemId": "sample_c",
+   "time": 5705,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1090,
+   "teamId": "meribe17",
+   "problemId": "sample_f",
+   "time": 5756,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1253,
+   "teamId": "suneri43",
+   "problemId": "sample_f",
+   "time": 5756,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1266,
+   "teamId": "yubene66",
+   "problemId": "sample_f",
+   "time": 5765,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1073,
+   "teamId": "dolori61",
+   "problemId": "sample_f",
+   "time": 5775,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1290,
+   "teamId": "chibedo73",
+   "problemId": "sample_e",
+   "time": 5785,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1113,
+   "teamId": "zenobe74",
+   "problemId": "sample_e",
+   "time": 5801,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1365,
+   "teamId": "hadoyu39",
+   "problemId": "sample_f",
+   "time": 5893,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1326,
+   "teamId": "kahame25",
+   "problemId": "sample_c",
+   "time": 5938,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1075,
+   "teamId": "dolori61",
+   "problemId": "sample_f",
+   "time": 5947,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1142,
+   "teamId": "mezera87",
+   "problemId": "sample_f",
+   "time": 5966,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1117,
+   "teamId": "donelo44",
+   "problemId": "sample_b",
+   "time": 5970,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1043,
+   "teamId": "hamira64",
+   "problemId": "sample_g",
+   "time": 6011,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1220,
+   "teamId": "midoka76",
+   "problemId": "sample_b",
+   "time": 6058,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1172,
+   "teamId": "rasuka39",
+   "problemId": "sample_h",
+   "time": 6062,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1297,
+   "teamId": "nenochi97",
+   "problemId": "sample_d",
+   "time": 6088,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1044,
+   "teamId": "hamira64",
+   "problemId": "sample_g",
+   "time": 6122,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1076,
+   "teamId": "dolori61",
+   "problemId": "sample_f",
+   "time": 6191,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1118,
+   "teamId": "donelo44",
+   "problemId": "sample_b",
+   "time": 6201,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1171,
+   "teamId": "rasuka39",
+   "problemId": "sample_h",
+   "time": 6207,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1298,
+   "teamId": "nenochi97",
+   "problemId": "sample_d",
+   "time": 6231,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1206,
+   "teamId": "zelori30",
+   "problemId": "sample_e",
+   "time": 6242,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1173,
+   "teamId": "rasuka39",
+   "problemId": "sample_h",
+   "time": 6303,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1190,
+   "teamId": "menemi16",
+   "problemId": "sample_e",
+   "time": 6322,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1244,
+   "teamId": "chimeka60",
+   "problemId": "sample_c",
+   "time": 6364,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1338,
+   "teamId": "nezesu88",
+   "problemId": "sample_c",
+   "time": 6390,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1267,
+   "teamId": "yubene66",
+   "problemId": "sample_d",
+   "time": 6441,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1231,
+   "teamId": "chimino47",
+   "problemId": "sample_f",
+   "time": 6471,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1061,
+   "teamId": "chikayu24",
+   "problemId": "sample_c",
+   "time": 6486,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1350,
+   "teamId": "chimize57",
+   "problemId": "sample_e",
+   "time": 6486,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1174,
+   "teamId": "rasuka39",
+   "problemId": "sample_h",
+   "time": 6488,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1268,
+   "teamId": "yubene66",
+   "problemId": "sample_d",
+   "time": 6669,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1091,
+   "teamId": "meribe17",
+   "problemId": "sample_g",
+   "time": 6702,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1299,
+   "teamId": "nenochi97",
+   "problemId": "sample_d",
+   "time": 6738,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1315,
+   "teamId": "mechira58",
+   "problemId": "sample_f",
+   "time": 6764,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1270,
+   "teamId": "yubene66",
+   "problemId": "sample_d",
+   "time": 6789,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1045,
+   "teamId": "hamira64",
+   "problemId": "sample_g",
+   "time": 6791,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1092,
+   "teamId": "meribe17",
+   "problemId": "sample_g",
+   "time": 6828,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1254,
+   "teamId": "suneri43",
+   "problemId": "sample_g",
+   "time": 6876,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1175,
+   "teamId": "rasuka39",
+   "problemId": "sample_h",
+   "time": 6889,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1351,
+   "teamId": "chimize57",
+   "problemId": "sample_e",
+   "time": 6890,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1134,
+   "teamId": "menedo48",
+   "problemId": "sample_d",
+   "time": 6911,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1269,
+   "teamId": "yubene66",
+   "problemId": "sample_d",
+   "time": 6923,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1008,
+   "teamId": "zechika65",
+   "problemId": "sample_d",
+   "time": 6933,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1046,
+   "teamId": "hamira64",
+   "problemId": "sample_g",
+   "time": 6941,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1232,
+   "teamId": "chimino47",
+   "problemId": "sample_f",
+   "time": 6978,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1062,
+   "teamId": "chikayu24",
+   "problemId": "sample_c",
+   "time": 7035,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1377,
+   "teamId": "suchisu39",
+   "problemId": "sample_c",
+   "time": 7058,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1255,
+   "teamId": "suneri43",
+   "problemId": "sample_g",
+   "time": 7195,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1143,
+   "teamId": "mezera87",
+   "problemId": "sample_e",
+   "time": 7201,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1278,
+   "teamId": "loraha39",
+   "problemId": "sample_d",
+   "time": 7247,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1383,
+   "teamId": "neloka24",
+   "problemId": "sample_d",
+   "time": 7262,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1233,
+   "teamId": "chimino47",
+   "problemId": "sample_f",
+   "time": 7275,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1093,
+   "teamId": "meribe17",
+   "problemId": "sample_g",
+   "time": 7346,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1234,
+   "teamId": "chimino47",
+   "problemId": "sample_d",
+   "time": 7463,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1077,
+   "teamId": "dolori61",
+   "problemId": "sample_e",
+   "time": 7479,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1271,
+   "teamId": "yubene66",
+   "problemId": "sample_d",
+   "time": 7489,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1125,
+   "teamId": "mirimi83",
+   "problemId": "sample_d",
+   "time": 7569,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1094,
+   "teamId": "meribe17",
+   "problemId": "sample_g",
+   "time": 7630,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1176,
+   "teamId": "rasuka39",
+   "problemId": "sample_f",
+   "time": 7642,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1177,
+   "teamId": "rasuka39",
+   "problemId": "sample_f",
+   "time": 7643,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1078,
+   "teamId": "dolori61",
+   "problemId": "sample_e",
+   "time": 7654,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1114,
+   "teamId": "zenobe74",
+   "problemId": "sample_f",
+   "time": 7658,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1272,
+   "teamId": "yubene66",
+   "problemId": "sample_d",
+   "time": 7681,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1305,
+   "teamId": "losube95",
+   "problemId": "sample_d",
+   "time": 7757,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1335,
+   "teamId": "tohano47",
+   "problemId": "sample_c",
+   "time": 7783,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1079,
+   "teamId": "dolori61",
+   "problemId": "sample_e",
+   "time": 7817,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1384,
+   "teamId": "neloka24",
+   "problemId": "sample_d",
+   "time": 7837,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1316,
+   "teamId": "mechira58",
+   "problemId": "sample_f",
+   "time": 7876,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1126,
+   "teamId": "mirimi83",
+   "problemId": "sample_d",
+   "time": 7890,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1317,
+   "teamId": "mechira58",
+   "problemId": "sample_f",
+   "time": 7915,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1191,
+   "teamId": "menemi16",
+   "problemId": "sample_g",
+   "time": 8012,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1178,
+   "teamId": "rasuka39",
+   "problemId": "sample_f",
+   "time": 8035,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1135,
+   "teamId": "menedo48",
+   "problemId": "sample_f",
+   "time": 8046,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1235,
+   "teamId": "chimino47",
+   "problemId": "sample_d",
+   "time": 8054,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1327,
+   "teamId": "kahame25",
+   "problemId": "sample_e",
+   "time": 8101,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1279,
+   "teamId": "loraha39",
+   "problemId": "sample_e",
+   "time": 8272,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1318,
+   "teamId": "mechira58",
+   "problemId": "sample_f",
+   "time": 8297,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1385,
+   "teamId": "neloka24",
+   "problemId": "sample_d",
+   "time": 8326,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1136,
+   "teamId": "menedo48",
+   "problemId": "sample_f",
+   "time": 8355,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1047,
+   "teamId": "hamira64",
+   "problemId": "sample_h",
+   "time": 8482,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1053,
+   "teamId": "lotoka51",
+   "problemId": "sample_c",
+   "time": 8589,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1328,
+   "teamId": "kahame25",
+   "problemId": "sample_e",
+   "time": 8613,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1386,
+   "teamId": "neloka24",
+   "problemId": "sample_d",
+   "time": 8620,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1017,
+   "teamId": "loyuze72",
+   "problemId": "sample_d",
+   "time": 8664,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1339,
+   "teamId": "nezesu88",
+   "problemId": "sample_d",
+   "time": 8665,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1366,
+   "teamId": "hadoyu39",
+   "problemId": "sample_g",
+   "time": 8719,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1207,
+   "teamId": "zelori30",
+   "problemId": "sample_f",
+   "time": 8933,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1245,
+   "teamId": "chimeka60",
+   "problemId": "sample_d",
+   "time": 8933,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1340,
+   "teamId": "nezesu88",
+   "problemId": "sample_d",
+   "time": 8957,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1273,
+   "teamId": "yubene66",
+   "problemId": "sample_e",
+   "time": 8976,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1054,
+   "teamId": "lotoka51",
+   "problemId": "sample_c",
+   "time": 8996,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1238,
+   "teamId": "chimino47",
+   "problemId": "sample_g",
+   "time": 8997,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1352,
+   "teamId": "chimize57",
+   "problemId": "sample_d",
+   "time": 9179,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1151,
+   "teamId": "hadone65",
+   "problemId": "sample_d",
+   "time": 9224,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1236,
+   "teamId": "chimino47",
+   "problemId": "sample_g",
+   "time": 9241,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1048,
+   "teamId": "hamira64",
+   "problemId": "sample_h",
+   "time": 9265,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1280,
+   "teamId": "loraha39",
+   "problemId": "sample_e",
+   "time": 9278,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1237,
+   "teamId": "chimino47",
+   "problemId": "sample_g",
+   "time": 9309,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1033,
+   "teamId": "losume81",
+   "problemId": "sample_f",
+   "time": 9327,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1208,
+   "teamId": "zelori30",
+   "problemId": "sample_f",
+   "time": 9351,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1239,
+   "teamId": "chimino47",
+   "problemId": "sample_g",
+   "time": 9449,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1319,
+   "teamId": "mechira58",
+   "problemId": "sample_h",
+   "time": 9520,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1367,
+   "teamId": "hadoyu39",
+   "problemId": "sample_i",
+   "time": 9530,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1049,
+   "teamId": "hamira64",
+   "problemId": "sample_h",
+   "time": 9560,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1281,
+   "teamId": "loraha39",
+   "problemId": "sample_e",
+   "time": 9626,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1300,
+   "teamId": "nenochi97",
+   "problemId": "sample_e",
+   "time": 9668,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1209,
+   "teamId": "zelori30",
+   "problemId": "sample_f",
+   "time": 9671,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1353,
+   "teamId": "chimize57",
+   "problemId": "sample_d",
+   "time": 9714,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1240,
+   "teamId": "chimino47",
+   "problemId": "sample_g",
+   "time": 9736,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1144,
+   "teamId": "mezera87",
+   "problemId": "sample_g",
+   "time": 9766,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1282,
+   "teamId": "loraha39",
+   "problemId": "sample_e",
+   "time": 9840,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1179,
+   "teamId": "rasuka39",
+   "problemId": "sample_g",
+   "time": 9945,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1368,
+   "teamId": "hadoyu39",
+   "problemId": "sample_i",
+   "time": 9968,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1080,
+   "teamId": "dolori61",
+   "problemId": "sample_g",
+   "time": 10003,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1354,
+   "teamId": "chimize57",
+   "problemId": "sample_d",
+   "time": 10066,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1095,
+   "teamId": "meribe17",
+   "problemId": "sample_h",
+   "time": 10121,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1301,
+   "teamId": "nenochi97",
+   "problemId": "sample_e",
+   "time": 10140,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1393,
+   "teamId": "lobeka12",
+   "problemId": "sample_c",
+   "time": 10241,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1320,
+   "teamId": "mechira58",
+   "problemId": "sample_g",
+   "time": 10247,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1210,
+   "teamId": "zelori30",
+   "problemId": "sample_f",
+   "time": 10263,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1221,
+   "teamId": "midoka76",
+   "problemId": "sample_d",
+   "time": 10308,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1329,
+   "teamId": "kahame25",
+   "problemId": "sample_f",
+   "time": 10439,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1291,
+   "teamId": "chibedo73",
+   "problemId": "sample_f",
+   "time": 10472,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1222,
+   "teamId": "midoka76",
+   "problemId": "sample_d",
+   "time": 10544,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1034,
+   "teamId": "losume81",
+   "problemId": "sample_g",
+   "time": 10563,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1321,
+   "teamId": "mechira58",
+   "problemId": "sample_g",
+   "time": 10565,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1010,
+   "teamId": "zechika65",
+   "problemId": "sample_e",
+   "time": 10578,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1211,
+   "teamId": "zelori30",
+   "problemId": "sample_g",
+   "time": 10609,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1119,
+   "teamId": "donelo44",
+   "problemId": "sample_c",
+   "time": 10613,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1302,
+   "teamId": "nenochi97",
+   "problemId": "sample_f",
+   "time": 10613,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1283,
+   "teamId": "loraha39",
+   "problemId": "sample_g",
+   "time": 10630,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1378,
+   "teamId": "suchisu39",
+   "problemId": "sample_d",
+   "time": 10637,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1081,
+   "teamId": "dolori61",
+   "problemId": "sample_g",
+   "time": 10643,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1009,
+   "teamId": "zechika65",
+   "problemId": "sample_g",
+   "time": 10663,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1096,
+   "teamId": "meribe17",
+   "problemId": "sample_h",
+   "time": 10663,
+   "verdict": "AC",
+   "score": 100
+  },
+  {
+   "id": 1152,
+   "teamId": "hadone65",
+   "problemId": "sample_e",
+   "time": 10695,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1387,
+   "teamId": "neloka24",
+   "problemId": "sample_f",
+   "time": 10717,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1292,
+   "teamId": "chibedo73",
+   "problemId": "sample_g",
+   "time": 10724,
+   "verdict": "RE",
+   "score": 0
+  },
+  {
+   "id": 1257,
+   "teamId": "nenodo27",
+   "problemId": "sample_c",
+   "time": 10733,
+   "verdict": "TLE",
+   "score": 0
+  },
+  {
+   "id": 1097,
+   "teamId": "meribe17",
+   "problemId": "sample_i",
+   "time": 10765,
+   "verdict": "WA",
+   "score": 0
+  },
+  {
+   "id": 1018,
+   "teamId": "loyuze72",
+   "problemId": "sample_e",
+   "time": 10790,
+   "verdict": "WA",
+   "score": 0
+  }
+ ],
+ "awards": [
+  {
+   "name": "1등상",
+   "rank": [
+    1,
+    1
+   ]
+  },
+  {
+   "name": "2등상",
+   "rank": [
+    2,
+    3
+   ]
+  },
+  {
+   "name": "3등상",
+   "rank": [
+    4,
+    6
+   ]
+  },
+  {
+   "name": "4등상",
+   "rank": [
+    7,
+    10
+   ]
+  },
+  {
+   "name": "새내기 특별상",
+   "group": "새내기",
+   "count": 2,
+   "excludeAwarded": true
+  }
+ ]
+}

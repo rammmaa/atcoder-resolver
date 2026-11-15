@@ -1,0 +1,18 @@
+{
+  "contestId": "ycpc2026",
+  "title": "YCPC 2026",
+  "rule": "sum",
+  "penaltyMinutes": 20,
+  "freezeMinutesBeforeEnd": 30,
+  "participants": "sample.participants.csv",
+  "onlyListed": false,
+  "exclude": ["staff_account_1", "staff_account_2"],
+  "includeNoSubmission": false,
+  "awards": [
+    { "name": "1등상", "rank": [1, 1] },
+    { "name": "2등상", "rank": [2, 3] },
+    { "name": "3등상", "rank": [4, 6] },
+    { "name": "4등상", "rank": [7, 10] },
+    { "name": "새내기 특별상", "group": "새내기", "count": 2, "excludeAwarded": true }
+  ]
+}

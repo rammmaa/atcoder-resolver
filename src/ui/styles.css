@@ -1,0 +1,613 @@
+:root {
+  --ink: #0f1a2e;
+  --ink-2: #46526b;
+  --ink-3: #8c96aa;
+  --blue: #1e6fd9;
+  --sky: #e3eeff;
+  --paper: #ffffff;
+  --line: #dde5f2;
+  --ok: #17a05d;
+  --ok-deep: #0b7743;
+  --ok-soft: #e2f6ea;
+  --no: #e0444a;
+  --no-soft: #fdeaea;
+  --wait: #f4a81e;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  color: var(--ink);
+  background: linear-gradient(180deg, #f6f9ff 0%, #eaf1fe 100%);
+  font-family:
+    'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR',
+    'Malgun Gothic', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+}
+
+/* ───────── 순위표 화면 ───────── */
+
+.stage {
+  box-sizing: border-box;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 1.4vh;
+  padding: 2vh 2vw 1.6vh;
+  user-select: none;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2.2vw;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: clamp(22px, 2.3vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.status {
+  margin: 0;
+  overflow: hidden;
+  font-size: clamp(14px, 1.35vw, 26px);
+  font-weight: 600;
+  color: var(--ink-2);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  animation: status-in 0.25s ease both;
+}
+.status.tone-ok {
+  color: var(--ok-deep);
+}
+.status.tone-no {
+  color: var(--no);
+}
+.status.tone-wait {
+  color: #9a6400;
+}
+
+.progress {
+  display: flex;
+  gap: 1.4vw;
+  font-size: clamp(12px, 1.05vw, 20px);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.progress b {
+  color: var(--ink);
+  font-weight: 700;
+}
+.progress .auto {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.board {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
+}
+
+.thead,
+.row-inner {
+  display: grid;
+  grid-template-columns: var(--cols);
+  align-items: center;
+  column-gap: calc(var(--row-h) * 0.09);
+  padding: 0 calc(var(--row-h) * 0.22) 0 calc(var(--row-h) * 0.1);
+}
+
+.thead {
+  padding-bottom: 0.7vh;
+  font-size: clamp(11px, 0.95vw, 18px);
+  font-weight: 600;
+  color: var(--ink-3);
+  text-align: center;
+}
+.thead .th-name {
+  text-align: left;
+}
+.thead .th-problem {
+  font-size: 1.3em;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.viewport {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.rows {
+  position: relative;
+  will-change: transform;
+}
+.is-animated .rows {
+  transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.row {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: var(--row-h);
+}
+.is-animated .row {
+  transition: transform 1000ms cubic-bezier(0.2, 0.75, 0.15, 1);
+}
+
+.row-inner {
+  position: absolute;
+  inset: calc(var(--row-h) * 0.055) 2px;
+  background: var(--paper);
+  border-radius: calc(var(--row-h) * 0.17);
+  box-shadow: 0 0 0 1px var(--line);
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s;
+}
+
+.row.is-spotlight {
+  z-index: 2;
+}
+.row.is-spotlight .row-inner {
+  background: var(--sky);
+  box-shadow: 0 0 0 2px var(--blue);
+}
+.row.got-solved .row-inner,
+.row.got-partial .row-inner {
+  background: var(--ok-soft);
+  box-shadow: 0 0 0 2px var(--ok);
+}
+.row.got-failed .row-inner {
+  background: var(--no-soft);
+  box-shadow: 0 0 0 2px var(--no);
+}
+.row.is-rising {
+  z-index: 3;
+}
+.row.is-rising .row-inner {
+  box-shadow:
+    0 0 0 2px var(--ok),
+    0 calc(var(--row-h) * 0.12) calc(var(--row-h) * 0.4) rgba(15, 26, 46, 0.2);
+}
+
+.rank {
+  font-size: calc(var(--row-h) * 0.4);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink-3);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.3s;
+}
+.row.is-final .rank {
+  color: var(--ink);
+}
+
+.who {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.18;
+}
+.name {
+  overflow: hidden;
+  font-size: calc(var(--row-h) * 0.32);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.affiliation {
+  overflow: hidden;
+  font-size: calc(var(--row-h) * 0.2);
+  color: var(--ink-3);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.tag {
+  margin-left: 0.6em;
+  padding: 0.14em 0.55em;
+  font-size: 0.56em;
+  font-style: normal;
+  font-weight: 700;
+  color: var(--blue);
+  vertical-align: 0.18em;
+  background: var(--sky);
+  border-radius: 99px;
+}
+.row.is-spotlight .tag {
+  background: var(--paper);
+}
+.tag.tag-award {
+  color: var(--paper);
+  background: var(--ink);
+}
+
+.score {
+  font-size: calc(var(--row-h) * 0.36);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.score small {
+  margin-left: 0.3em;
+  font-size: 0.5em;
+  font-weight: 600;
+  color: var(--no);
+}
+.time {
+  font-size: calc(var(--row-h) * 0.27);
+  font-weight: 600;
+  color: var(--ink-2);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.cell {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  height: calc(var(--row-h) * 0.66);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.12;
+  border-radius: calc(var(--row-h) * 0.13);
+  font-variant-numeric: tabular-nums;
+}
+.cell b {
+  font-size: calc(var(--row-h) * 0.25);
+  font-weight: 700;
+}
+.cell small {
+  font-size: calc(var(--row-h) * 0.17);
+  font-weight: 600;
+  opacity: 0.88;
+}
+.cell small:empty {
+  display: none;
+}
+
+.cell.solved {
+  color: #fff;
+  background: var(--ok);
+}
+.cell.solved.first {
+  background: var(--ok-deep);
+}
+/* 퍼스트 솔브는 색을 한 단계 진하게 하고 모서리에 작은 표식을 단다. */
+.cell.solved.first::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: calc(var(--row-h) * 0.2);
+  height: calc(var(--row-h) * 0.2);
+  content: '';
+  background: #ffd45c;
+  border-radius: 0 calc(var(--row-h) * 0.13) 0 calc(var(--row-h) * 0.2);
+}
+.cell.partial {
+  color: #06492a;
+  background: #9bdcb8;
+}
+.cell.failed {
+  color: var(--no);
+  background: var(--no-soft);
+}
+.row.got-failed .cell.failed.is-revealed {
+  color: #fff;
+  background: var(--no);
+}
+.cell.pending {
+  color: #3d2a00;
+  background-color: var(--wait);
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.3) 0 calc(var(--row-h) * 0.08),
+    transparent calc(var(--row-h) * 0.08) calc(var(--row-h) * 0.16)
+  );
+}
+.cell.empty::before {
+  width: calc(var(--row-h) * 0.07);
+  height: calc(var(--row-h) * 0.07);
+  content: '';
+  background: var(--line);
+  border-radius: 50%;
+}
+
+.cell.is-picked {
+  z-index: 1;
+  box-shadow: 0 0 0 calc(var(--row-h) * 0.06) rgba(244, 168, 30, 0.35);
+  animation: picked 0.8s ease-in-out infinite;
+}
+.cell.is-revealed {
+  animation: revealed 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+
+@keyframes picked {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.16);
+  }
+}
+@keyframes revealed {
+  0% {
+    filter: brightness(1.7);
+    transform: scale(1.55);
+  }
+  100% {
+    filter: none;
+    transform: scale(1);
+  }
+}
+@keyframes status-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.4em);
+  }
+}
+
+/* ───────── 시상 화면 ───────── */
+
+.award {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: rgba(246, 249, 255, 0.95);
+  backdrop-filter: blur(14px);
+  animation: award-fade 0.35s ease both;
+}
+.award > * {
+  margin: 0;
+  animation: award-rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.award-contest {
+  font-size: clamp(14px, 1.3vw, 26px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+}
+.award-name {
+  margin-top: 3vh;
+  font-size: clamp(28px, 4.4vw, 90px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--blue);
+  animation-delay: 0.08s;
+}
+.award h2 {
+  max-width: 92vw;
+  margin: 1.5vh 0 2.5vh;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  animation-delay: 0.16s;
+}
+.award-who {
+  font-size: clamp(16px, 1.9vw, 38px);
+  font-weight: 500;
+  color: var(--ink-2);
+  animation-delay: 0.24s;
+}
+.award-stat {
+  display: flex;
+  gap: 3.2vw;
+  margin-top: 5vh;
+  padding-top: 3.5vh;
+  font-size: clamp(14px, 1.5vw, 30px);
+  color: var(--ink-3);
+  border-top: 2px solid var(--line);
+  font-variant-numeric: tabular-nums;
+  animation-delay: 0.32s;
+}
+.award-stat b {
+  margin-right: 0.12em;
+  font-size: 1.7em;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+@keyframes award-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes award-rise {
+  from {
+    opacity: 0;
+    transform: translateY(3vh);
+  }
+}
+
+/* ───────── 조작법 창 ───────── */
+
+.help {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 20;
+  width: min(560px, 86vw);
+  padding: 28px 32px;
+  background: var(--paper);
+  border-radius: 20px;
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 30px 80px rgba(15, 26, 46, 0.25);
+  transform: translate(-50%, -50%);
+}
+.help h2 {
+  margin: 0 0 16px;
+  font-size: 22px;
+}
+.help dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px 20px;
+  margin: 0;
+  font-size: 15px;
+}
+.help dt {
+  font-weight: 700;
+  color: var(--blue);
+}
+.help dd {
+  margin: 0;
+  color: var(--ink-2);
+}
+.help h2:not(:first-child) {
+  margin-top: 26px;
+}
+/* 조작법 창 안의 범례. 순위표 칸과 같은 색을 쓴다. */
+.help .swatch {
+  --row-h: 44px;
+  position: relative;
+  display: block;
+  width: 44px;
+  height: 22px;
+  border-radius: 6px;
+}
+.help .swatch.solved {
+  background: var(--ok);
+}
+.help .swatch.solved.first {
+  background: var(--ok-deep);
+}
+.help .swatch.solved.first::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 9px;
+  height: 9px;
+  content: '';
+  background: #ffd45c;
+  border-radius: 0 6px 0 9px;
+}
+.help .swatch.failed {
+  background: var(--no-soft);
+  box-shadow: inset 0 0 0 1px #f6c9cb;
+}
+.help .swatch.pending {
+  background-color: var(--wait);
+  background-image: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0 4px, transparent 4px 8px);
+}
+
+/* ───────── 파일을 고르는 첫 화면 ───────── */
+
+.loader {
+  box-sizing: border-box;
+  display: flex;
+  max-width: 760px;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+.loader-eyebrow {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--blue);
+  text-transform: uppercase;
+}
+.loader h1 {
+  margin: 0 0 36px;
+  font-size: clamp(30px, 5vw, 52px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+.dropzone {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 36px 32px;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: var(--paper);
+  border: 2px dashed #b9c8e4;
+  border-radius: 20px;
+  transition:
+    border-color 0.15s,
+    background-color 0.15s;
+}
+.dropzone:hover,
+.dropzone.is-over {
+  background: var(--sky);
+  border-color: var(--blue);
+}
+.dropzone strong {
+  font-size: 20px;
+}
+.dropzone span {
+  font-size: 15px;
+  color: var(--ink-2);
+}
+.loader-error {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 16px 0 0;
+  padding: 14px 18px;
+  font-size: 15px;
+  color: var(--no);
+  background: var(--no-soft);
+  border-radius: 12px;
+}
+.link {
+  margin-top: 24px;
+  padding: 0;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  background: none;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-animated .row,
+  .is-animated .rows {
+    transition-duration: 1ms;
+  }
+  .cell.is-picked,
+  .cell.is-revealed,
+  .award,
+  .award > * {
+    animation: none;
+  }
+}

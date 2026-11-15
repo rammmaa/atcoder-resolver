@@ -1,0 +1,13 @@
+node_modules/
+dist/
+
+# AtCoder에서 받은 원본 응답과 로그인 쿠키. 참가자 정보가 들어 있으니 저장소에 올리지 않는다.
+raw/
+.env
+*.cookie
+
+# 실제 대회 데이터. 샘플만 저장소에 둔다.
+data/*
+!data/sample.json
+!data/sample.config.json
+!data/sample.participants.csv
