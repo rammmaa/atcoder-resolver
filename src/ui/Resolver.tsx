@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { assignAwards, buildTimeline, type FrameKind } from '../core/resolver';
+import { assignAwards, buildTimeline, type FrameKind, nameRevealedAt } from '../core/resolver';
 import type { ContestData } from '../core/types';
 import { AwardOverlay } from './AwardOverlay';
 import { Board } from './Board';
@@ -41,6 +41,7 @@ export function Resolver({ data }: { data: ContestData }) {
   const frames = useMemo(() => buildTimeline(data), [data]);
   const awards = useMemo(() => assignAwards(frames[frames.length - 1].rows, data.awards ?? []), [frames, data]);
   const last = frames.length - 1;
+  const nameAt = useMemo(() => nameRevealedAt(frames), [frames]);
 
   // 같은 자료로 다시 열었을 때만 이어 볼 수 있게 자료의 크기를 키에 넣는다.
   const storageKey = `resolver:${data.contest.id}:${data.teams.length}:${data.submissions.length}:${frames.length}`;
@@ -142,7 +143,13 @@ export function Resolver({ data }: { data: ContestData }) {
         </p>
       </header>
 
-      <Board data={data} frame={frame} awards={awards} rowsVisible={rowsVisible} />
+      <Board
+        data={data}
+        frame={frame}
+        awards={awards}
+        rowsVisible={rowsVisible}
+        named={(id) => (nameAt.get(id) ?? 0) <= index}
+      />
 
       {awardTeam && <AwardOverlay contest={data.contest} row={awardTeam} awards={frame.awards ?? []} />}
 

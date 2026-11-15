@@ -190,6 +190,20 @@ body {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.who.is-hidden .name {
+  color: var(--ink-3);
+  letter-spacing: 0.25em;
+}
+/* 가려진 이름이 열릴 때. 요소가 새로 그려질 때만 재생된다. */
+.is-animated .who:not(.is-hidden) {
+  animation: name-in 0.6s ease-out;
+}
+@keyframes name-in {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+  }
+}
 .affiliation {
   overflow: hidden;
   font-size: calc(var(--row-h) * 0.2);

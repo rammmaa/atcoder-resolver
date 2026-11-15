@@ -12,9 +12,11 @@ interface Props {
   frame: Frame;
   awards: Map<string, string[]>;
   rowsVisible: number;
+  /** 이 참가자의 이름을 보여 줘도 되는지. 커서가 오기 전에는 가린다. */
+  named: (teamId: string) => boolean;
 }
 
-export function Board({ data, frame, awards, rowsVisible }: Props) {
+export function Board({ data, frame, awards, rowsVisible, named }: Props) {
   const viewport = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
   const [animated, setAnimated] = useState(false);
@@ -77,6 +79,7 @@ export function Board({ data, frame, awards, rowsVisible }: Props) {
                   top={at * rowHeight}
                   spotlight={spotlight}
                   finalized={finalized}
+                  hidden={!named(row.team.id)}
                   rising={spotlight && frame.kind === 'reveal' && frame.to !== frame.from}
                   pickedProblem={spotlight && frame.kind === 'pick' ? frame.problemId : undefined}
                   revealedProblem={spotlight && frame.kind === 'reveal' ? frame.problemId : undefined}
@@ -96,6 +99,7 @@ interface RowProps {
   top: number;
   spotlight: boolean;
   finalized: boolean;
+  hidden: boolean;
   rising: boolean;
   pickedProblem?: string;
   revealedProblem?: string;
@@ -104,13 +108,19 @@ interface RowProps {
 }
 
 const RowView = memo(function RowView(props: RowProps) {
-  const { row, top, spotlight, finalized, rising, pickedProblem, revealedProblem, outcome, awards } = props;
+  const { row, top, spotlight, finalized, hidden, rising, pickedProblem, revealedProblem, outcome, awards } = props;
   const classes = ['row', spotlight && 'is-spotlight', finalized && 'is-final', rising && 'is-rising', outcome && `got-${outcome}`];
 
   return (
     <div className={classes.filter(Boolean).join(' ')} style={{ transform: `translateY(${top}px)` }}>
       <div className="row-inner">
         <span className="rank">{row.rank}</span>
+        {hidden ? (
+          // 아이디도 이름만큼 누구인지 드러내므로 함께 가린다. 그룹 표시(새내기 등)도 마찬가지다.
+          <span className="who is-hidden">
+            <span className="name">? ? ?</span>
+          </span>
+        ) : (
         <span className="who">
           <span className="name">
             {row.team.name}
@@ -123,6 +133,7 @@ const RowView = memo(function RowView(props: RowProps) {
           </span>
           {row.team.affiliation && <span className="affiliation">{row.team.affiliation}</span>}
         </span>
+        )}
         <span className="score">
           {row.score}
           {row.penalty > 0 && <small>({row.penalty})</small>}

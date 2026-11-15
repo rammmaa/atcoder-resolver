@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { assignAwards, buildTimeline } from './resolver';
+import { assignAwards, buildTimeline, nameRevealedAt } from './resolver';
 import { buildBoard, cellKey, revealAll } from './scoring';
 import type { AwardRule, ContestData, Rule, Submission, Team } from './types';
 
@@ -81,6 +81,27 @@ describe('buildTimeline', () => {
     expect(ids(reveals[1].rows)).toEqual(['park', 'kim', 'lee']);
     const afterJump = frames[frames.indexOf(reveals[1]) + 1];
     expect(afterJump).toMatchObject({ kind: 'final', cursor: 2, teamId: 'lee' });
+  });
+
+  it('이름은 커서가 그 참가자에게 처음 온 프레임부터 공개되고, 그 뒤로는 계속 보인다', () => {
+    const data = contest(
+      ['kim', 'lee', 'park'],
+      [
+        sub('kim', 'a', 100, 'AC'),
+        sub('lee', 'a', 200, 'AC'),
+        sub('park', 'a', 9100, 'AC'),
+        sub('park', 'b', 9200, 'AC'),
+      ],
+    );
+    const frames = buildTimeline(data);
+    const at = nameRevealedAt(frames);
+    // park이 가장 먼저 커서를 받고, 1위로 올라간 뒤 밀려 내려온 lee, 그다음 kim 순서다.
+    expect(at.get('park')).toBe(1);
+    expect(at.get('lee')).toBe(frames.findIndex((f) => f.teamId === 'lee'));
+    expect(at.get('kim')).toBe(frames.findIndex((f) => f.teamId === 'kim'));
+    expect(at.get('lee')).toBeLessThan(at.get('kim') ?? 0);
+    expect(Math.max(...at.values())).toBeLessThan(frames.length);
+    expect(frames.slice(0, at.get('park')).every((f) => f.teamId !== 'park')).toBe(true);
   });
 
   it('한 참가자의 대기 칸은 문제 순서대로 공개한다', () => {

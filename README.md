@@ -25,6 +25,7 @@ The two rules give different rankings for the same submissions. When we re-score
 - Checks the collected data against AtCoder's own standings. Score, penalty count, time and rank are compared for every contestant, and so is the number of submissions per contestant. If a different rule setting would make them match, the collector says so.
 - Award slides for rank-based prizes (`1st–3rd place`) and group prizes (for example the best two rookies who haven't won anything else). Ties at the cutoff share the prize.
 - Presenter controls: keyboard and presentation-remote friendly, auto-play that stops on each award, step backwards, and resume after an accidental page reload.
+- Hides every contestant's name, affiliation and group until the cursor first reaches them, like Spotboard's award mode. Handles are hidden too, since they identify people just as well.
 - Shows the final rank on rows that are already settled, so a row labelled "2nd" never turns into "3rd" later.
 
 ![A reveal moving a row up](docs/reveal.png)

@@ -58,6 +58,18 @@ export function assignAwards(finalRows: Row[], rules: AwardRule[]): Map<string, 
 }
 
 /**
+ * 참가자마다 이름을 공개하는 프레임 번호. 스팟보드처럼 커서가 처음 그 참가자에게 온 순간 이름을 연다.
+ * 모든 참가자는 순위가 확정될 때 반드시 커서를 받으므로 빠지는 사람은 없다.
+ */
+export function nameRevealedAt(frames: Frame[]): Map<string, number> {
+  const at = new Map<string, number>();
+  frames.forEach((frame, i) => {
+    if (frame.teamId && !at.has(frame.teamId)) at.set(frame.teamId, i);
+  });
+  return at;
+}
+
+/**
  * 프리즈 시점부터 최종 순위표까지의 공개 순서를 전부 미리 계산한다.
  *
  * ICPC Resolver와 같은 방식이다. 커서를 맨 아랫줄에 두고, 그 자리의 참가자에게 가려진 제출이 있으면
