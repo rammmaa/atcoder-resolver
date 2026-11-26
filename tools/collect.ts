@@ -25,6 +25,7 @@ import {
   convert,
   type OfficialMismatch,
   type ResolverConfig,
+  suggestSettings,
 } from './atcoder/convert';
 import { type Downloaded, download, LoginRequired } from './atcoder/download';
 import { parseContestTop, parseParticipantsCsv, parseSubmissionsPage, type RawSubmission } from './atcoder/parse';
@@ -141,10 +142,14 @@ function checkAgainstOfficial(data: ContestData, standings: AtCoderStandings): v
 
   const closer = ours.final.mismatches.length <= ours.frozen.mismatches.length ? ours.final : ours.frozen;
   console.warn(`! 공식 순위표 대조: ${compared}명 가운데 ${closer.mismatches.length}명이 다릅니다.\n${describeMismatches(closer.mismatches)}`);
-  const otherRule = data.contest.rule === 'sum' ? 'last' : 'sum';
-  const other = diff({ ...data, contest: { ...data.contest, rule: otherRule } });
-  if (other.final.mismatches.length === 0 || other.frozen.mismatches.length === 0) {
-    console.warn(`! 설정의 rule을 "${otherRule}"로 바꾸면 공식 순위표와 일치합니다.`);
+  const suggestion = suggestSettings(data, standings);
+  if (suggestion) {
+    const changes = [
+      suggestion.rule !== data.contest.rule && `rule을 "${suggestion.rule}"로`,
+      suggestion.penaltyMinutes * 60 !== data.contest.penaltySeconds && `penaltyMinutes를 ${suggestion.penaltyMinutes}로`,
+    ].filter(Boolean);
+    const target = suggestion.stage === 'final' ? '최종 순위표' : '프리즈 시점 순위표';
+    console.warn(`! 설정의 ${changes.join(', ')} 바꾸면 공식 ${target}와 일치합니다.`);
   }
 }
 

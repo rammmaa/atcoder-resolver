@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { buildBoard, revealAll } from '../../src/core/scoring';
-import { type AtCoderStandings, compareSubmissionCounts, compareWithOfficial, convert, type ConvertInput } from './convert';
+import {
+  type AtCoderStandings,
+  compareSubmissionCounts,
+  compareWithOfficial,
+  convert,
+  type ConvertInput,
+  suggestSettings,
+} from './convert';
 import type { ContestTop, RawSubmission } from './parse';
 
 const top: ContestTop = {
@@ -333,5 +340,57 @@ describe('compareWithOfficial', () => {
       mismatches: [],
       missing: ['alice', 'bob'],
     });
+  });
+});
+
+describe('suggestSettings', () => {
+  // 대회 화면의 페널티는 20분이다. bob은 A를 18:10에 틀리고 18:20에 맞힌 뒤 B를 18:30에 맞힌다.
+  // alice는 A를 18:00에, B를 18:40에 맞힌다.
+  const data = (config: Partial<ConvertInput['config']> = {}) =>
+    convert(
+      input({
+        submissions: [
+          raw('alice', 'A', '18:00:00'),
+          raw('bob', 'A', '18:10:00', 'WA'),
+          raw('bob', 'A', '18:20:00'),
+          raw('bob', 'B', '18:30:00'),
+          raw('alice', 'B', '18:40:00'),
+        ],
+        config: { contestId: 'ycpc2026', freezeMinutesBeforeEnd: 30, ...config },
+      }),
+    ).data;
+
+  // last, 페널티 5분: alice 70분(4200초), bob 60분 + 5분(3900초)이라 bob이 1위.
+  const lastFive = standings([
+    ['bob', 1, 200, 1, 3900],
+    ['alice', 2, 200, 0, 4200],
+  ]);
+
+  it('지금 설정이 공식 순위표와 맞으면 제안하지 않는다', () => {
+    expect(suggestSettings(data({ rule: 'last', penaltyMinutes: 5 }), lastFive)).toBeNull();
+  });
+
+  it('페널티만 다르면 페널티를 바꾸라고 제안한다', () => {
+    expect(suggestSettings(data({ rule: 'last' }), lastFive)).toEqual({ rule: 'last', penaltyMinutes: 5, stage: 'final' });
+  });
+
+  it('규칙만 다르면 페널티는 그대로 두고 규칙을 바꾸라고 제안한다', () => {
+    expect(suggestSettings(data({ rule: 'sum', penaltyMinutes: 5 }), lastFive)).toEqual({
+      rule: 'last',
+      penaltyMinutes: 5,
+      stage: 'final',
+    });
+  });
+
+  it('규칙과 페널티가 모두 다르면 둘 다 바꾸라고 제안한다', () => {
+    expect(suggestSettings(data({ rule: 'sum' }), lastFive)).toEqual({ rule: 'last', penaltyMinutes: 5, stage: 'final' });
+  });
+
+  it('어떤 설정으로도 맞지 않으면 null', () => {
+    const impossible = standings([
+      ['alice', 1, 300, 0, 100],
+      ['bob', 2, 200, 1, 3900],
+    ]);
+    expect(suggestSettings(data({ rule: 'last' }), impossible)).toBeNull();
   });
 });
