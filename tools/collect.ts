@@ -15,7 +15,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join, resolve } from 'node:path';
 import { formatClock } from '../src/core/load';
-import { buildTimeline } from '../src/core/resolver';
+import { assignAwards, buildTimeline } from '../src/core/resolver';
 import { buildBoard, revealAll } from '../src/core/scoring';
 import type { ContestData } from '../src/core/types';
 import {
@@ -153,6 +153,29 @@ function checkAgainstOfficial(data: ContestData, standings: AtCoderStandings): v
   }
 }
 
+/** 최종 순위표에서 총점과 시간이 같아 같은 순위를 받은 참가자 묶음을 알린다. 상 구간 경계에 걸리면 수상 인원이 늘어난다. */
+function reportTies(data: ContestData): void {
+  const rows = buildBoard(data, revealAll(data)).filter((r) => r.score > 0);
+  const awards = assignAwards(rows, data.awards ?? []);
+  const groups = new Map<number, typeof rows>();
+  for (const row of rows) groups.set(row.rank, [...(groups.get(row.rank) ?? []), row]);
+  const ties = [...groups.values()].filter((g) => g.length > 1);
+  if (ties.length === 0) {
+    console.log('동점 확인: 최종 순위표에 총점과 시간이 모두 같은 참가자가 없습니다.');
+    return;
+  }
+  console.warn(`! 동점 확인: 최종 순위표에 총점과 시간이 모두 같은 묶음이 ${ties.length}개 있습니다.`);
+  for (const group of ties) {
+    const names = group
+      .map((r) => {
+        const won = awards.get(r.team.id);
+        return `${r.team.name} (${r.team.id})${won ? ` [${won.join(', ')}]` : ''}`;
+      })
+      .join(', ');
+    console.warn(`  ${group[0].rank}위 ${group.length}명, 총점 ${group[0].score}, 시간 ${formatClock(group[0].time)}: ${names}`);
+  }
+}
+
 async function main() {
   if (!configPath) {
     console.error('사용법: pnpm collect <설정 파일.json> [--offline] [--delay ms] [--out 경로]');
@@ -198,6 +221,7 @@ async function main() {
   console.log(`참가자 ${data.teams.length}명, 문제 ${data.problems.length}개`);
   console.log(`공개 단계 ${frames.length}장, 결과 공개 ${frames.filter((f) => f.kind === 'reveal').length}번`);
   for (const w of warnings) console.warn(`! ${w}`);
+  reportTies(data);
   if (raw.standings) {
     checkSubmissionCounts(data, raw.standings);
     checkAgainstOfficial(data, raw.standings);
