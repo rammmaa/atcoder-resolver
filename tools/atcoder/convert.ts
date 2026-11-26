@@ -1,4 +1,4 @@
-import type { Row } from '../../src/core/scoring';
+import { buildBoard, revealAll, type Row } from '../../src/core/scoring';
 import type { AwardRule, ContestData, Problem, Rule, Submission, Team } from '../../src/core/types';
 import type { ContestTop, Participant, RawSubmission } from './parse';
 
@@ -279,4 +279,55 @@ export function compareSubmissionCounts(data: ContestData, standings: AtCoderSta
   if (full.length === 0) return { state: 'match', differing: [] };
   if (differing(beforeFreeze).length === 0) return { state: 'frozen', differing: [] };
   return { state: 'mismatch', differing: full };
+}
+
+export interface SettingSuggestion {
+  rule: Rule;
+  penaltyMinutes: number;
+  /** final: 최종 순위표와 일치한다. frozen: 프리즈 시점 순위표와 일치한다. */
+  stage: 'final' | 'frozen';
+}
+
+/**
+ * 지금 설정으로는 공식 순위표와 맞지 않을 때, rule이나 penaltyMinutes를 바꾸면 맞는지 찾아본다.
+ * 하나만 바꾸는 쪽을 먼저 보고(rule만, 그다음 페널티만), 그래도 없으면 둘 다 바꿔 본다.
+ * 페널티는 0분부터 maxPenaltyMinutes분까지 1분 단위로, 지금 값에 가까운 것부터 본다.
+ * 지금 설정이 이미 맞거나 맞는 설정을 찾지 못하면 null.
+ */
+export function suggestSettings(
+  data: ContestData,
+  standings: AtCoderStandings,
+  maxPenaltyMinutes = 60,
+): SettingSuggestion | null {
+  const currentRule = data.contest.rule;
+  const otherRule: Rule = currentRule === 'sum' ? 'last' : 'sum';
+  const currentPenalty = data.contest.penaltySeconds / 60;
+
+  const stageThatMatches = (rule: Rule, penaltyMinutes: number): SettingSuggestion['stage'] | null => {
+    const trial: ContestData = { ...data, contest: { ...data.contest, rule, penaltySeconds: penaltyMinutes * 60 } };
+    for (const [stage, revealed] of [
+      ['final', revealAll(trial)],
+      ['frozen', new Set<string>()],
+    ] as const) {
+      const check = compareWithOfficial(buildBoard(trial, revealed), standings);
+      if (check.compared > 0 && check.mismatches.length === 0) return stage;
+    }
+    return null;
+  };
+
+  if (stageThatMatches(currentRule, currentPenalty)) return null;
+
+  const penalties = Array.from({ length: maxPenaltyMinutes + 1 }, (_, m) => m)
+    .filter((m) => m !== currentPenalty)
+    .sort((a, b) => Math.abs(a - currentPenalty) - Math.abs(b - currentPenalty) || a - b);
+  const candidates: [Rule, number][] = [
+    [otherRule, currentPenalty],
+    ...penalties.map((m): [Rule, number] => [currentRule, m]),
+    ...penalties.map((m): [Rule, number] => [otherRule, m]),
+  ];
+  for (const [rule, penaltyMinutes] of candidates) {
+    const stage = stageThatMatches(rule, penaltyMinutes);
+    if (stage) return { rule, penaltyMinutes, stage };
+  }
+  return null;
 }

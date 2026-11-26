@@ -22,7 +22,7 @@ The two rules give different rankings for the same submissions. When we re-score
 - Supports both AtCoder tie-break rules: `last` (AtCoder default) and `sum` (ICPC style), with any penalty length.
 - Handles partial scores. A reveal can raise a contestant's score without fully solving the problem.
 - Collects data straight from AtCoder: the submission list, the contest page and the official standings JSON.
-- Checks the collected data against AtCoder's own standings. Score, penalty count, time and rank are compared for every contestant, and so is the number of submissions per contestant. If a different rule setting would make them match, the collector says so.
+- Checks the collected data against AtCoder's own standings. Score, penalty count, time and rank are compared for every contestant, and so is the number of submissions per contestant. If a different `rule` or `penaltyMinutes` would make them match, the collector says which one.
 - Award slides for rank-based prizes (`1st–3rd place`) and group prizes (for example the best two rookies who haven't won anything else). Ties at the cutoff share the prize.
 - Presenter controls: keyboard and presentation-remote friendly, auto-play that stops on each award, step backwards, and resume after an accidental page reload.
 - Hides every contestant's name, affiliation and group until the cursor first reaches them, like Spotboard's award mode. Handles are hidden too, since they identify people just as well.
@@ -55,7 +55,7 @@ Copy `data/sample.config.json` to something like `data/my-contest.config.json` a
 
 ### 2. Give the collector your AtCoder session
 
-While a contest is running or its scoreboard is frozen, only the organizer's account can see every submission. The collector needs that account's `REVEL_SESSION` cookie.
+AtCoder only shows the submission list and the standings JSON to logged-in users, even for contests that ended long ago, so the collector always needs a session. While a contest is running or its scoreboard is frozen, only the organizer's account can see every submission, so use that account's `REVEL_SESSION` cookie.
 
 1. Log in to AtCoder with the organizer account.
 2. Open the browser's developer tools and copy the value of the `REVEL_SESSION` cookie for `atcoder.jp`.
@@ -90,7 +90,7 @@ Every run downloads the whole submission list again, because a rejudge can chang
 The collector finishes with two reports. Read both before the ceremony.
 
 - **Submission counts.** For each contestant, the number of submissions collected is compared with the count in AtCoder's standings. A missing page or a duplicated submission shows up here.
-- **Official standings.** The computed score, penalty count, time and rank are compared with AtCoder's standings for every contestant. Each mismatch is listed. If switching `rule` or `penaltyMinutes` would make everything match, the report says which setting to use. If AtCoder's standings are still frozen, the report says that it only compared up to the freeze.
+- **Official standings.** The computed score, penalty count, time and rank are compared with AtCoder's standings for every contestant. Each mismatch is listed. If switching `rule`, `penaltyMinutes` (0 to 60 minutes) or both would make everything match, the report says which setting to use, preferring the smallest change. If AtCoder's standings are still frozen, the report says that it only compared up to the freeze.
 
 ### 5. Bundle a single file
 
